@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews – TRIFORT BUILDERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* copy styles from index.html for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcfaf7;
+            color: #1e2a28;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 18px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        :root {
+            --emerald: #0f4c3a;
+            --emerald-light: #1e6b54;
+            --gold: #b49450;
+            --gold-light: #d4b97b;
+            --cream: #faf7f0;
+            --charcoal: #2c3e3a;
+            --sand: #e8e0d0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--emerald);
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: var(--gold);
+            font-weight: 300;
+            font-size: 1.1rem;
+            display: block;
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 10px 22px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--emerald);
+            color: white;
+            border-color: var(--gold);
+        }
+
+        .nav-item i {
+            margin-right: 6px;
+            color: var(--gold);
+        }
+
+        .admin-link {
+            background: var(--gold);
+            color: var(--emerald);
+            border-color: var(--gold);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .admin-link:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-slide-left { animation: slideInLeft 0.8s ease-out; }
+        .animate-slide-right { animation: slideInRight 0.8s ease-out; }
+        .animate-fade { animation: fadeIn 1s ease-out; }
+
+        .auth-btn.signin {
+            background: transparent;
+            color: var(--emerald);
+            border: 1px solid var(--gold);
+        }
+
+        .auth-btn.signup {
+            background: var(--emerald);
+            color: white;
+            border: 1px solid var(--emerald);
+        }
+
+        .auth-btn.signin:hover {
+            background: var(--gold);
+            color: var(--emerald);
+        }
+
+        .auth-btn.signup:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        a:hover, button:hover, .auth-btn:hover, .hero-btn:hover, .auth-btn-submit:hover {
+            transform: scale(1.05);
+        }
+
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-subtitle {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            color: var(--emerald);
+            margin-bottom: 20px;
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 2px;
+            background: var(--gold);
+            margin: 20px auto;
+        }
+
+        .footer {
+            background: var(--emerald);
+            color: white;
+            padding: 20px 30px 10px;
+        }
+
+        .footer-main {
+            padding-bottom: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .footer-logo p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1000px) {
+            .header-container { flex-direction: column; gap: 20px; }
+            .project-grid, .services-grid, .auth-section, .footer-container { grid-template-columns: 1fr; }
+            .hero-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>TRIFORT</h1>
+                <span>BUILDERS & ARCHITECTS</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="projects.html" class="nav-item">Projects</a>
+                <a href="reviews.html" class="nav-item active">Reviews</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <a href="subcontractor.html" class="nav-item">Sub‑contractor</a>
+                <a href="admin-login.html" class="nav-item admin-link">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section" style="margin-top:120px;">
+        <div class="section-header">
+            <div class="section-subtitle">Client Voices</div>
+            <h2 class="section-title">Testimonials & Reviews</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div style="max-width:800px;margin:auto;">
+            <blockquote style="font-style:italic; padding:20px; border-left:5px solid var(--gold); margin-bottom:30px;">
+                “TRIFORT delivered our dream home on time and beyond expectations. The attention to detail was incredible."<br>– Sarah L., Homeowner
+            </blockquote>
+            <blockquote style="font-style:italic; padding:20px; border-left:5px solid var(--gold); margin-bottom:30px;">
+                “Professional, reliable, and innovative. Their team turned our commercial vision into reality."<br>– Mark D., Developer
+            </blockquote>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <h3>TRIFORT</h3>
+                    <p>Building excellence since 1987. Creating architectural masterpieces that stand the test of time.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Email: info@trifort.com</li>
+                        <li>Address: 123 Builder Blvd, City, Country</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="reviews.html">Testimonials</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Residential</a></li>
+                        <li><a href="#">Commercial</a></li>
+                        <li><a href="#">Industrial</a></li>
+                        <li><a href="#">Restoration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TRIFORT BUILDERS. All rights reserved. Created by V § OUT Solutions</p>
+        </div>
+    </footer>
+    <script>
+        const current = location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-item').forEach(a => {
+            if (a.getAttribute('href') === current) a.classList.add('active');
+        });
+    </script>
+</body>
+</html>

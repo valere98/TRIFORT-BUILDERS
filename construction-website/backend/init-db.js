@@ -1,0 +1,43 @@
+const mongoose = require('mongoose');
+require('dotenv').config({ path: '../../.env' });
+const User = require('./models/User');
+
+const initializeDatabase = async () => {
+    try {
+        // Connect to MongoDB
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+
+        console.log('MongoDB connected');
+
+        // Check if admin user already exists
+        const adminExists = await User.findOne({ email: process.env.ADMIN_EMAIL });
+
+        if (adminExists) {
+            console.log('Admin user already exists');
+        } else {
+            // Create default admin user
+            const adminUser = new User({
+                name: process.env.ADMIN_NAME || 'Administrator',
+                email: process.env.ADMIN_EMAIL,
+                password_hash: process.env.ADMIN_PASSWORD,
+                role: 'admin'
+            });
+
+            await adminUser.save();
+            console.log('Admin user created successfully');
+            console.log(`Email: ${process.env.ADMIN_EMAIL}`);
+            console.log(`Password: ${process.env.ADMIN_PASSWORD}`);
+        }
+
+        mongoose.connection.close();
+        console.log('Database initialization complete');
+    } catch (error) {
+        console.error('Database initialization error:', error);
+        process.exit(1);
+    }
+};
+
+initializeDatabase();

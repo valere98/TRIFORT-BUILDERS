@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects – TRIFORT BUILDERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* copy styles from index.html for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcfaf7;
+            color: #1e2a28;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 18px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        :root {
+            --emerald: #0f4c3a;
+            --emerald-light: #1e6b54;
+            --gold: #b49450;
+            --gold-light: #d4b97b;
+            --cream: #faf7f0;
+            --charcoal: #2c3e3a;
+            --sand: #e8e0d0;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.05);
+            z-index: 1000;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--emerald);
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: var(--gold);
+            font-weight: 300;
+            font-size: 1.1rem;
+            display: block;
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 10px 22px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--emerald);
+            color: white;
+            border-color: var(--gold);
+        }
+
+        .nav-item i {
+            margin-right: 6px;
+            color: var(--gold);
+        }
+
+        .admin-link {
+            background: var(--gold);
+            color: var(--emerald);
+            border-color: var(--gold);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .admin-link:hover {
+            background: transparent;
+            color: var(--gold);
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-slide-left { animation: slideInLeft 0.8s ease-out; }
+        .animate-slide-right { animation: slideInRight 0.8s ease-out; }
+        .animate-fade { animation: fadeIn 1s ease-out; }
+
+        .auth-btn.signin {
+            background: transparent;
+            color: var(--emerald);
+            border: 1px solid var(--gold);
+        }
+
+        .auth-btn.signup {
+            background: var(--emerald);
+            color: white;
+            border: 1px solid var(--emerald);
+        }
+
+        .auth-btn.signin:hover {
+            background: var(--gold);
+            color: var(--emerald);
+        }
+
+        .auth-btn.signup:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        a:hover, button:hover, .auth-btn:hover, .hero-btn:hover, .auth-btn-submit:hover {
+            transform: scale(1.05);
+        }
+
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-subtitle {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            color: var(--emerald);
+            margin-bottom: 20px;
+        }
+
+        .section-divider {
+            width: 80px;
+            height: 2px;
+            background: var(--gold);
+            margin: 20px auto;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
+        }
+
+        .project-image {
+            height: 400px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(15,76,58,0.95), transparent);
+            color: white;
+            padding: 30px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            transform: translateY(0);
+        }
+
+        .project-overlay h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .project-overlay p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .project-link:hover {
+            color: var(--gold-light);
+        }
+
+        .loading, .error, .no-projects {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            width: 100%;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
+        .no-projects {
+            color: var(--sand);
+        }
+
+        /* footer styles are already included below in HTML but repeated here for responsive overrides */
+        .footer {
+            background: var(--emerald);
+            color: white;
+            padding: 20px 30px 10px;
+        }
+
+        .footer-main {
+            padding-bottom: 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .footer-logo p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1000px) {
+            .header-container { flex-direction: column; gap: 20px; }
+            .project-grid, .services-grid, .auth-section, .footer-container { grid-template-columns: 1fr; }
+            .hero-title { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- header copied from index with active Projects -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>TRIFORT</h1>
+                <span>BUILDERS & ARCHITECTS</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="about.html" class="nav-item">About</a>
+                <a href="projects.html" class="nav-item active">Projects</a>
+                <a href="reviews.html" class="nav-item">Reviews</a>
+                <a href="contact.html" class="nav-item">Contact</a>
+                <a href="subcontractor.html" class="nav-item">Sub‑contractor</a>
+                <a href="admin-login.html" class="nav-item admin-link">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section" style="margin-top:120px;">
+        <div class="section-header">
+            <div class="section-subtitle">Our Portfolio</div>
+            <h2 class="section-title">Completed & Ongoing Projects</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="project-grid" id="project-grid">
+            <!-- Projects will be loaded dynamically -->
+            <div class="loading">Loading projects...</div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <h3>TRIFORT</h3>
+                    <p>Building excellence since 1987. Creating architectural masterpieces that stand the test of time.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Email: info@trifort.com</li>
+                        <li>Address: 123 Builder Blvd, City, Country</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="reviews.html">Testimonials</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Residential</a></li>
+                        <li><a href="#">Commercial</a></li>
+                        <li><a href="#">Industrial</a></li>
+                        <li><a href="#">Restoration</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 TRIFORT BUILDERS. All rights reserved. Created by V § OUT Solutions</p>
+        </div>
+    </footer>
+    <script>
+        // Load projects dynamically
+        async function loadProjects() {
+            try {
+                const response = await fetch('http://localhost:5000/api/projects');
+                const projects = await response.json();
+                
+                const projectGrid = document.getElementById('project-grid');
+                
+                if (projects.length === 0) {
+                    projectGrid.innerHTML = '<div class="no-projects">No projects available yet.</div>';
+                    return;
+                }
+                
+                // Separate ongoing and completed projects
+                const ongoingProjects = projects.filter(p => p.status === 'ongoing');
+                const completedProjects = projects.filter(p => p.status === 'completed');
+                
+                let html = '';
+                
+                // Show ongoing projects first
+                if (ongoingProjects.length > 0) {
+                    html += '<h3 style="width: 100%; text-align: center; margin: 30px 0 20px; color: var(--emerald); font-size: 1.5rem;">Ongoing Projects</h3>';
+                    ongoingProjects.forEach(project => {
+                        const imageUrl = project.image ? `http://localhost:5000/uploads/${project.image}` : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                        const completionDate = project.completion_date ? new Date(project.completion_date).getFullYear() : 'TBD';
+                        const statusBadge = '<span style="background: var(--gold); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 8px;">ONGOING</span>';
+                        
+                        html += `
+                            <div class="project-card">
+                                <img src="${imageUrl}" alt="${project.title}" class="project-image">
+                                <div class="project-overlay">
+                                    <h3>${project.title} ${statusBadge}</h3>
+                                    <p>${project.location || 'Location TBD'} · ${completionDate}</p>
+                                    <p style="font-size: 0.9rem; margin: 5px 0; color: var(--gold);">${project.category}</p>
+                                    <p style="font-size: 0.85rem; margin-bottom: 10px;">${project.description || 'No description available'}</p>
+                                    <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                // Show completed projects
+                if (completedProjects.length > 0) {
+                    html += '<h3 style="width: 100%; text-align: center; margin: 40px 0 20px; color: var(--emerald); font-size: 1.5rem;">Completed Projects</h3>';
+                    completedProjects.forEach(project => {
+                        const imageUrl = project.image ? `http://localhost:5000/uploads/${project.image}` : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                        const completionDate = project.completion_date ? new Date(project.completion_date).getFullYear() : 'TBD';
+                        
+                        html += `
+                            <div class="project-card">
+                                <img src="${imageUrl}" alt="${project.title}" class="project-image">
+                                <div class="project-overlay">
+                                    <h3>${project.title}</h3>
+                                    <p>${project.location || 'Location TBD'} · ${completionDate}</p>
+                                    <p style="font-size: 0.9rem; margin: 5px 0; color: var(--gold);">${project.category}</p>
+                                    <p style="font-size: 0.85rem; margin-bottom: 10px;">${project.description || 'No description available'}</p>
+                                    <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                projectGrid.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                document.getElementById('project-grid').innerHTML = '<div class="error">Failed to load projects. Please try again later.</div>';
+            }
+        }
+        
+        // Load projects when page loads
+        document.addEventListener('DOMContentLoaded', loadProjects);
+        
+        // Navigation active state
+        const current = location.pathname.split('/').pop();
+        document.querySelectorAll('.nav-item').forEach(a => {
+            if (a.getAttribute('href') === current) a.classList.add('active');
+        });
+    </script>
+
+</body>
+</html>
