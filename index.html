@@ -14,7 +14,7 @@
             --emerald-light: #1a6f56;
             --gold: #b38f43;
             --gold-light: #d4b97b;
-            --cream: #faf7f0;
+scm-history-item:e%3A%5CTRIFORT%20BUILDERS?%7B%22repositoryId%22%3A%22scm0%22%2C%22historyItemId%22%3A%22e1696baf2d7364c3eab369c8ad3b43f66362196d%22%2C%22historyItemDisplayId%22%3A%22e1696ba%22%7D            --cream: #faf7f0;
             --charcoal: #2d423d;
             --sand: #e0d8c5;
             --bg: #fcfaf7;
@@ -209,7 +209,13 @@
         .hero-content {
             position: relative; z-index: 2;
             max-width: 1400px; margin: 0 auto;
-            padding: 0 40px; width: 100%;
+            padding: 0 40px 120px; /* ensure space below content so buttons aren't overlapped */
+            width: 100%;
+            /* center child elements */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .hero-eyebrow {
@@ -264,6 +270,9 @@
 
         .hero-actions {
             display: flex; gap: 16px; align-items: center;
+            justify-content: center;
+            margin-bottom: 40px; /* add a little breathing room from section bottom */
+            position: relative; z-index: 3;
             opacity: 0; transform: translateY(20px);
             animation: fadeUp 0.8s ease 1.2s forwards;
         }
@@ -425,7 +434,7 @@
 
         /* ── ABOUT TEASER ────────────────────────── */
         .about-teaser {
-            padding: 120px 40px;
+            padding: 80px 40px; /* reduced top padding for closer spacing to intro strip */
             max-width: 1400px; margin: 0 auto;
             display: grid; grid-template-columns: 1fr 1fr;
             gap: 100px; align-items: center;
@@ -473,12 +482,17 @@
         .about-accent-box {
             position: absolute; right: -28px; top: 40px;
             width: 180px; padding: 24px;
-            background: var(--emerald); border: 1px solid rgba(179,143,67,0.3);
+            /* replace 'example.jpg' with the actual filename from images/ */
+            background: linear-gradient(rgba(14,70,53,0.08),rgba(14,70,53,0.08)),
+                        url('images/example.jpg') center/cover no-repeat;
+            border: 1px solid rgba(179,143,67,0.3);
         }
         .about-accent-box .num {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.4rem; font-weight: 300;
             color: var(--gold-light); line-height: 1;
+            /* ensure text is visible against background image */
+            text-shadow: 0 0 4px rgba(0,0,0,0.4);
         }
         .about-accent-box .lbl {
             font-size: 0.65rem; letter-spacing: 2px;
