@@ -39,10 +39,31 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
   box-shadow:0 4px 40px rgba(30,61,43,.07);
 }
 /* AFTER */
+.hdr-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
 .hdr-logo .lg-light{display:block;height:72px;width:auto;}
 .hdr-logo .lg-dark{display:none;height:72px;width:auto;}
 .hdr.scrolled .lg-light{display:none;}
 .hdr.scrolled .lg-dark{display:block;filter:saturate(1.6) brightness(0.8) contrast(1.2);}
+.logo-text-block{display:flex;flex-direction:column;}
+.logo-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+  font-weight:600;
+  letter-spacing:3px;
+  color:var(--W);
+  text-transform:uppercase;
+  line-height:1;
+}
+.logo-tagline{
+  font-size:.5rem;
+  letter-spacing:2px;
+  color:var(--GL);
+  text-transform:uppercase;
+  font-weight:500;
+  margin-top:3px;
+}
+.hdr.scrolled .logo-name{color:var(--E);}
+.hdr.scrolled .logo-tagline{color:var(--G);}
 
 .hdr.scrolled{
   background:rgba(17, 65, 35, 0.769);    /* dark green instead of cream */
@@ -292,7 +313,16 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
   .hdr{padding:0 24px;}
 }
 @media(max-width:700px){
-  .hdr-nav{display:none;}
+  .hdr-nav{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .hdr-nav a{
+    padding:8px 10px;
+    font-size:.62rem;
+  }
+  body{cursor:auto;}
+  #CUR,#CURR{display:none;}
   .strip{flex-wrap:wrap;}
   .strip-item{min-width:50%;}
   .body{padding:52px 24px;}
@@ -322,6 +352,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
     <a href="projects.html">Projects</a>
     <a href="reviews.html">Reviews</a>
     <a href="contact.html" class="active">Contact</a>
+     <a href="subcontractor.html" class="nav-item active">Sub-Contractor</a>
+    <a href="admin-login.html" class="nav-item admin-link">Admin</a>
   </nav>
 </header>
 
