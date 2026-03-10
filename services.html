@@ -857,6 +857,12 @@
                 <span class="logo-tagline">Transparency through builds</span>
             </div>
         </a>
+         <!-- HAMBURGER BUTTON -->
+        <button id="menuToggle" class="nav-toggle">
+            <span></span>
+            <span></span>
+        </button>
+
         <nav class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-item">Home</a>
             <a href="about.html" class="nav-item">About</a>
@@ -1678,6 +1684,19 @@ setTimeout(() => {
         btn.style.animationDuration = '2s';
     });
 }, 2000);
+</script>
+<script>
+const toggle = document.querySelector(".nav-toggle");
+const header = document.querySelector(".header");
+
+toggle.addEventListener("click", () => {
+  header.classList.toggle("nav-open");
+});
+links.forEach(link => {
+  link.addEventListener("click", () => {
+    header.classList.remove("nav-open");
+  });
+});
 </script>
 </body>
 </html>
