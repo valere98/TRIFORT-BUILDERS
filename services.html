@@ -1686,16 +1686,15 @@ setTimeout(() => {
 }, 2000);
 </script>
 <script>
-const toggle = document.querySelector(".nav-toggle");
-const header = document.querySelector(".header");
+document.addEventListener("DOMContentLoaded", function () {
 
-toggle.addEventListener("click", () => {
-  header.classList.toggle("nav-open");
-});
-links.forEach(link => {
-  link.addEventListener("click", () => {
-    header.classList.remove("nav-open");
+  const toggle = document.querySelector(".nav-toggle");
+  const header = document.querySelector(".header");
+
+  toggle.addEventListener("click", function () {
+      header.classList.toggle("nav-open");
   });
+
 });
 </script>
 </body>
