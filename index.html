@@ -136,27 +136,77 @@
         .header.hero-mode .logo-tagline { color: var(--gold-light); }
 
         /* NAV */
-        .nav-menu { display: flex; align-items: center; gap: 4px; }
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
         .nav-item {
-            font-size: 0.72rem; font-weight: 500;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            color: var(--charcoal); text-decoration: none;
-            padding: 8px 14px; border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--charcoal);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 4px;
             border: 1px solid transparent;
             transition: all .3s;
         }
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover,
+        .nav-item.active {
             background: rgba(30,61,43,0.06);
             border-color: rgba(30,61,43,0.12);
         }
-        .header.hero-mode .nav-item { color: rgba(255,255,255,0.85); }
-        .header.hero-mode .nav-item:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+        .header.hero-mode .nav-item {
+            color: rgba(255,255,255,0.85);
+        }
+        .header.hero-mode .nav-item:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
         .admin-link {
             background: var(--emerald) !important;
             color: white !important;
             border-color: var(--emerald) !important;
         }
-        .admin-link:hover { background: var(--emerald-light) !important; }
+        .admin-link:hover {
+            background: var(--emerald-light) !important;
+        }
+
+        /* MOBILE NAV TOGGLE */
+        .nav-toggle {
+            display: none;
+            width: 38px;
+            height: 30px;
+            margin-left: 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            z-index: 1100;
+        }
+        .nav-toggle span {
+            position: absolute;
+            left: 4px;
+            right: 4px;
+            height: 2px;
+            background: var(--emerald);
+            transition: transform .3s ease, opacity .3s ease, top .3s ease, background .3s ease;
+        }
+        .nav-toggle span:nth-child(1) { top: 8px; }
+        .nav-toggle span:nth-child(2) { top: 18px; }
+        .header.hero-mode .nav-toggle span {
+            background: rgba(255,255,255,0.9);
+        }
+        .header.nav-open .nav-toggle span:nth-child(1) {
+            top: 13px;
+            transform: rotate(45deg);
+        }
+        .header.nav-open .nav-toggle span:nth-child(2) {
+            top: 13px;
+            transform: rotate(-45deg);
+        }
 
         /* ── HERO ───────────────────────────────── */
         .hero {
@@ -373,44 +423,105 @@
         /* ── INTRO STRIP ────────────────────────── */
         .intro-strip {
             background: var(--emerald);
-            padding: 0;
-            overflow: hidden;
+    padding: 20px 0;
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    white-space: nowrap; /* Keeps items in a single line */
         }
         .intro-strip-inner {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            max-width: 1400px; margin: 0 auto;
+                             display: flex; /* Use flexbox for horizontal layout */
+    flex-direction: row; /* Explicitly set horizontal direction */
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    gap: 20px; /* Space between cards */
         }
         .intro-strip-item {
-            display: flex; align-items: center; gap: 18px;
-            padding: 32px 40px;
-            border-right: 1px solid rgba(255,255,255,0.08);
-            position: relative; overflow: hidden;
-            transition: background .4s;
-            cursor: default;
+           display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 32px 40px;
+    background: rgba(255, 255, 255, 0.05); /* Card background */
+    border-radius: 12px; /* Rounded corners for card effect */
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    cursor: default;
+    flex: 1; /* Makes all cards equal width */
+    min-width: 250px; /* Prevents cards from getting too small */
+    white-space: normal; /* Allows text to wrap inside cards */
         }
-        .intro-strip-item:last-child { border-right: none; }
+        .intro-strip-item:last-child { border-right: 1px solid rgba(255,255,255,0.08); }
         .intro-strip-item::before {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            height: 2px; width: 0%; background: var(--gold);
-            transition: width .5s cubic-bezier(.4,0,.2,1);
+             content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--gold);
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
         }
         .intro-strip-item:hover::before { width: 100%; }
-        .intro-strip-item:hover { background: rgba(255,255,255,0.04); }
-        .intro-strip-icon {
-            width: 44px; height: 44px;
-            border: 1px solid rgba(200,112,26,0.4);
-            display: grid; place-items: center;
-            color: var(--gold); font-size: 1.1rem;
-            flex-shrink: 0;
-            transition: all .4s;
+        .intro-strip-item:hover { background: rgba(255,255,255,0.04); transform: translateY(-4px); /* Slight lift on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); }
+        .intro-strip-icon {  width: 44px;
+    height: 44px;
+    border: 1px solid rgba(200,112,26,0.4);
+    border-radius: 8px; /* Optional: rounded corners for icon container */
+    display: grid;
+    place-items: center;
+    color: var(--gold);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: all 0.4s;
+          
         }
-        .intro-strip-item:hover .intro-strip-icon {
-            background: var(--gold); color: white;
-            border-color: var(--gold);
-        }
-        .intro-strip-text { display: flex; flex-direction: column; }
-        .intro-strip-text strong { font-size: 0.8rem; letter-spacing: 2px; color: white; text-transform: uppercase; }
-        .intro-strip-text span, .intro-strip-text:not(:has(span)) { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+        .intro-strip-item:hover .intro-strip-icon {   background: var(--gold);
+    color: white;
+    border-color: var(--gold);
+    transform: scale(1.1); /* Slight scale on hover */}
+           
+       
+        .intro-strip-text {  display: flex;
+    flex-direction: column;
+    white-space: normal; /* Ensures text wraps */}
+        
+    .intro-strip-text strong {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.intro-strip-text span {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+    .intro-strip-inner {
+        flex-wrap: wrap; /* Wrap to next line on smaller screens */
+    }
+    
+    .intro-strip-item {
+        flex: 1 1 calc(50% - 20px); /* 2 cards per row */
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 640px) {
+    .intro-strip-inner {
+        flex-direction: column; /* Stack vertically on mobile */
+    }
+    
+    .intro-strip-item {
+        width: 100%;
+    }
+}
 
         /* ── VIDEO MOSAIC SECTION (inspired by Relats) ─ */
         .mosaic-section {
@@ -755,6 +866,7 @@
         }
         .step-desc { font-size: 0.78rem; line-height: 1.9; color: rgba(42,58,48,0.65); }
 
+
         /* ── TESTIMONIALS ───────────────────────── */
         .testimonial-section {
             background: var(--cream);
@@ -821,7 +933,7 @@
         .cta-desc { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.8; margin-bottom: 40px; }
 
         /* ── FOOTER ─────────────────────────────── */
-        .footer {
+       .footer {
             background: var(--emerald-deep);
             border-top: 1px solid rgba(255,255,255,0.06);
         }
@@ -838,14 +950,12 @@
         .footer-logo p { font-size: 0.78rem; color: rgba(255,255,255,0.45); line-height: 1.8; }
         .footer-col h4 {
             font-size: 0.65rem; letter-spacing: 3px;
-            text-transform: uppercase; color: var(--gold-light);
-            margin-bottom: 20px;
+            text-transform: uppercase; color: var(--gold-light); margin-bottom: 20px;
         }
         .footer-col ul { list-style: none; }
         .footer-col li { margin-bottom: 10px; }
         .footer-col li, .footer-col a {
-            font-size: 0.8rem; color: rgba(255,255,255,0.45);
-            text-decoration: none; transition: color .3s;
+            font-size: 0.8rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color .3s;
         }
         .footer-col a:hover { color: white; }
         .footer-bottom {
@@ -855,6 +965,7 @@
             display: flex; justify-content: space-between;
             font-size: 0.7rem; color: rgba(255,255,255,0.3);
         }
+
 
         /* ── BACK TO TOP ────────────────────────── */
         .back-top {
@@ -895,7 +1006,9 @@
         .float-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--emerald); margin-top: 2px; }
 
         /* ── RESPONSIVE ─────────────────────────── */
-        @media (max-width: 1100px) {
+        @media (max-width: 1200px) {
+            .header-container { padding-inline: 24px; }
+            .hero-content { padding-left: 6vw; }
             .mosaic-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 240px 240px 240px; }
             .mosaic-cell.main-cell { grid-row: span 2; }
             .services-grid { grid-template-columns: repeat(2,1fr); }
@@ -907,34 +1020,113 @@
             .about-teaser { grid-template-columns: 1fr; gap: 40px; }
             .intro-strip-inner { grid-template-columns: repeat(2,1fr); }
         }
-        @media (max-width: 700px) {
-            .header-container { padding: 12px 16px; }
-            .logo-img { height: 52px; }
-            .nav-menu {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-                justify-content: flex-end;
-            }
+        @media (max-width: 992px) {
+            .hero { min-height: 560px; }
+            .hero-content { padding: 0 32px; max-width: 100%; }
+            .hero-panel { display: none; }
+            .hero-stats { display: none; }
+            .mosaic-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 220px); }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .projects-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+            .project-card { min-height: 260px; }
+            .stats-band-inner { grid-template-columns: 1fr 1fr; }
+            .about-layout { grid-template-columns: 1fr; }
+            .about-gallery { margin-top: 32px; }
+        }
+        @media (max-width: 768px) {
             body { cursor: auto; }
             #cursor,
             #cursorRing { display: none; }
-            .hero-panel { display: none; }
-            .hero-stats { display: none; }
+
+            .header-container {
+                padding: 10px 16px;
+            }
+            .logo-img { height: 56px; }
+            .nav-toggle { display: block; }
+            .nav-menu {
+                position: fixed;
+                inset-inline: 0;
+                top: 64px;
+                padding: 16px 20px 24px;
+                background: rgba(252,250,247,0.98);
+                backdrop-filter: blur(18px);
+                flex-direction: column;
+                gap: 6px;
+                transform: translateY(-110%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform .35s ease, opacity .35s ease;
+            }
+            .header.hero-mode .nav-menu {
+                background: rgba(20,42,30,0.96);
+            }
+            .header.nav-open .nav-menu {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .nav-item {
+                width: 100%;
+                text-align: left;
+                padding-block: 10px;
+            }
+
+            .hero { min-height: 520px; }
             .hero-content { padding: 0 20px; }
-            .mosaic-grid { grid-template-columns: 1fr; grid-template-rows: repeat(6, 200px); }
+            .hero-title strong { font-size: clamp(2.6rem, 10vw, 3.6rem); }
+            .hero-desc { font-size: 0.9rem; max-width: none; }
+            .hero-actions { flex-direction: column; }
+
+            .mosaic-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 200px);
+            }
             .mosaic-cell.main-cell { grid-row: span 1; }
             .services-grid { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; grid-template-rows: none; }
-            .project-card { height: 280px; }
-            .project-card.large { grid-column: span 1; height: 320px; }
-            .stats-band-inner { grid-template-columns: 1fr 1fr; }
-            .testimonials-grid { grid-template-columns: 1fr; }
-            .process-steps { grid-template-columns: 1fr; }
-            .footer-container { grid-template-columns: 1fr; gap: 32px; }
-            .footer-bottom { flex-direction: column; gap: 8px; }
+            .project-card { height: 260px; }
+            .stats-band-inner { grid-template-columns: 1fr; }
             .intro-strip-inner { grid-template-columns: 1fr; }
+            .footer-inner { flex-direction: column; gap: 24px; }
         }
+       @media (max-width: 480px) {
+    .header-container { padding-inline: 12px; }
+    .logo-img { height: 50px; }
+    .hero-content { padding-inline: 16px; }
+
+    .hero-eyebrow { font-size: 0.6rem; }
+    .hero-desc { font-size: 0.85rem; }
+
+    .btn,
+    .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .section-inner,
+    .intro-strip-inner,
+    .projects-grid,
+    .services-grid {
+        padding-inline: 16px;
+    }
+
+    .project-card.large { grid-column: span 1; height: 320px; }
+    .stats-band-inner { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; }
+
+    /* footer mobile layout */
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
     </style>
 </head>
 <body>
@@ -973,9 +1165,14 @@
                 <span class="logo-tagline">Transparency Through Builds.</span>
             </div>
         </a>
-        <nav class="nav-menu">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+        </button>
+        <nav class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-item active">Home</a>
             <a href="about.html" class="nav-item">About</a>
+              <a href="services.html" class="nav-item">Services</a>
             <a href="projects.html" class="nav-item">Projects</a>
             <a href="reviews.html" class="nav-item">Reviews</a>
             <a href="contact.html" class="nav-item">Contact</a>
@@ -1003,7 +1200,8 @@
             <div class="hero-divider-line"></div>
             <span class="hero-divider-text">Transparency Through Builds</span>
         </div>
-        <p class="hero-desc">We craft landmark buildings and residences that blend timeless craftsmanship with modern precision — built to endure generations.</p>
+        <p class="hero-desc">We craft landmark buildings and residences that blend timeless craftsmanship with modern precision
+            built to endure generations.</p>
         <div class="hero-actions">
             <a href="projects.html" class="btn-primary"><span>View Our Work</span></a>
             <a href="contact.html" class="btn-ghost">Get a Quote <i class="fas fa-arrow-right"></i></a>
@@ -1037,19 +1235,19 @@
 <div class="intro-strip">
     <div class="intro-strip-inner">
         <div class="intro-strip-item reveal">
-            <div class="intro-strip-icon">1</i></div>
+            <div class="intro-strip-icon"><span>01.</span></div>
             <div class="intro-strip-text"><strong>Residential</strong><span>Luxury villas &amp; homes</span></div>
         </div>
         <div class="intro-strip-item reveal reveal-delay-1">
-            <div class="intro-strip-icon">2</i></div>
+            <div class="intro-strip-icon"><span>02.</span></div>
             <div class="intro-strip-text"><strong>Commercial</strong><span>Offices &amp; mixed-use</span></div>
         </div>
         <div class="intro-strip-item reveal reveal-delay-2">
-            <div class="intro-strip-icon">3</i></div>
+            <div class="intro-strip-icon"><span>03.</span></div>
             <div class="intro-strip-text"><strong>Industrial</strong><span>Warehouses &amp; facilities</span></div>
         </div>
         <div class="intro-strip-item reveal reveal-delay-3">
-            <div class="intro-strip-icon">4</i></div>
+            <div class="intro-strip-icon"><span>04.</span></div>
             <div class="intro-strip-text"><strong>Restoration</strong><span>Heritage &amp; renovation</span></div>
         </div>
     </div>
@@ -1114,8 +1312,20 @@
             <span class="section-tag reveal">Our Story</span>
             <h2 class="section-title reveal reveal-delay-1">A Legacy Built<br>on Integrity</h2>
             <div class="gold-rule reveal reveal-delay-2"></div>
-            <p class="reveal reveal-delay-2">TRI-FORT CONSTRUCTION is a Nairobi-based firm founded in 2020, built on a core promise: <em>Transparency Through Builds.</em> We believe every client deserves complete visibility into their project from the first sketch to the final handover.</p>
-            <p class="reveal reveal-delay-3">Our team blends local expertise with global standards delivering projects that marry aesthetic vision with structural excellence. Every build carries our name, and we build accordingly.</p>
+            <p class="reveal reveal-delay-2">TRI-FORT CONSTRUCTION is a Nairobi-based firm founded in 2020,
+                 built on a core promise: <em>Transparency Through Builds.</em> We believe every client deserves complete visibility
+                  into their project from the first sketch to the final handover.We are a multi- disciplinary architecture and design
+                   practice offering a combination of design expertise across a diverse typology of projects. Areas of expertise
+               include Architecture, Interior Design, Project Management Urban and Master Planning. Thiscombined with resources in
+                engineering services enables Tri-fort to ensure high-quality, innovative andfunctional solutions are delivered on time
+                 and withinbudget.</p>
+          
+                 <p class="reveal reveal-delay-3">The design process is propelled by extensive research,
+                                            site and cultural context. It is inspired by innovative and
+                                        vernacular methods of construction and use of
+                                        indigenous local materials and arts and crafts, while
+                                        evolving steadily within the parameters of sustainable
+                                           design principles.</p>
             <div class="about-pillars reveal reveal-delay-3">
                 <div class="about-pillar">
                     <div class="about-pillar-icon">1.</i></div>
@@ -1165,22 +1375,26 @@
             <div class="service-card reveal reveal-delay-1">
                 <div class="service-num">01</div>
                 <h3 class="service-title">Residential</h3>
-                <p class="service-desc">From intimate family homes to grand luxury villas, we build residences that reflect the aspirations of the people who live in them.</p>
+                <p class="service-desc">From intimate family homes to grand luxury villas, we build residences that reflect the
+                     aspirations of the people who live in them.</p>
             </div>
             <div class="service-card reveal reveal-delay-2">
                 <div class="service-num">02</div>
                 <h3 class="service-title">Commercial</h3>
-                <p class="service-desc">Office towers, retail centres, and mixed-use developments designed to enhance productivity and leave a lasting impression.</p>
+                <p class="service-desc">Office towers, retail centres, and mixed-use developments designed to enhance productivity
+                     and leave a lasting impression.</p>
             </div>
             <div class="service-card reveal reveal-delay-3">
                 <div class="service-num">03</div>
                 <h3 class="service-title">Industrial</h3>
-                <p class="service-desc">Purpose-built warehouses, manufacturing facilities, and logistics hubs engineered for efficiency and long-term performance.</p>
+                <p class="service-desc">Purpose-built warehouses, manufacturing facilities, and logistics hubs engineered for efficiency
+                     and long-term performance.</p>
             </div>
             <div class="service-card reveal reveal-delay-4">
                 <div class="service-num">04</div>
                 <h3 class="service-title">Restoration</h3>
-                <p class="service-desc">Breathing new life into heritage structures with meticulous care — preserving history while meeting the demands of modern use.</p>
+                <p class="service-desc">Breathing new life into heritage structures with meticulous care preserving history while
+                     meeting the demands of modern use.</p>
             </div>
         </div>
     </div>
@@ -1219,22 +1433,26 @@
         <div class="process-step reveal reveal-delay-1">
             <div class="step-circle"><span>01</span></div>
             <h3 class="step-title">Consultation</h3>
-            <p class="step-desc">We begin with a deep listening session — understanding your vision, budget, timeline, and the life you want to build inside these walls.</p>
+            <p class="step-desc">We begin with a deep listening session understanding your vision, budget, timeline, 
+                and the life you want to build inside these walls.</p>
         </div>
         <div class="process-step reveal reveal-delay-2">
             <div class="step-circle"><span>02</span></div>
             <h3 class="step-title">Design &amp; Planning</h3>
-            <p class="step-desc">Our architects translate vision into precise technical drawings, material selections, and a detailed project programme.</p>
+            <p class="step-desc">Our architects translate vision into precise technical drawings, material selections, and a detailed 
+                project programme.</p>
         </div>
         <div class="process-step reveal reveal-delay-3">
             <div class="step-circle"><span>03</span></div>
             <h3 class="step-title">Construction</h3>
-            <p class="step-desc">Skilled craftsmen and site managers execute every element with rigorous quality control, regular reporting, and transparent communication.</p>
+            <p class="step-desc">Skilled craftsmen and site managers execute every element with rigorous quality control,
+                 regular reporting, and transparent communication.</p>
         </div>
         <div class="process-step reveal reveal-delay-4">
             <div class="step-circle"><span>04</span></div>
             <h3 class="step-title">Handover</h3>
-            <p class="step-desc">We deliver a complete, snagging-free project — with full documentation, warranties, and ongoing aftercare support.</p>
+            <p class="step-desc">We deliver a complete, snagging-free project — with full documentation, warranties,
+                 and ongoing aftercare support.</p>
         </div>
     </div>
 </section>
@@ -1260,7 +1478,8 @@
         </div>
         <div class="testimonial-card reveal reveal-delay-2">
             <div class="t-stars">★★★★★</div>
-            <p class="t-text">The level of craftsmanship and attention to detail was beyond anything I expected. Our office building is a testament to their artistry and professionalism.</p>
+            <p class="t-text">The level of craftsmanship and attention to detail was beyond anything I expected.
+                 Our office building is a testament to their artistry and professionalism.</p>
             <div class="t-author">
                 <div class="t-avatar">SR</div>
                 <div>
@@ -1271,7 +1490,8 @@
         </div>
         <div class="testimonial-card reveal reveal-delay-3">
             <div class="t-stars">★★★★★</div>
-            <p class="t-text">From first consultation to final handover, TRI-FORT were professional, communicative, and delivered a landmark we are immensely proud of.</p>
+            <p class="t-text">From first consultation to final handover, TRI-FORT were professional, communicative,
+                 and delivered a landmark we are immensely proud of.</p>
             <div class="t-author">
                 <div class="t-avatar">MN</div>
                 <div>
@@ -1290,7 +1510,8 @@
         <h2 class="cta-title reveal reveal-delay-1">
             Let's Create Something<br><em>Extraordinary</em>
         </h2>
-        <p class="cta-desc reveal reveal-delay-2">Tell us about your project and let's begin building your vision together. Transparency guaranteed from day one.</p>
+        <p class="cta-desc reveal reveal-delay-2">Tell us about your project and let's begin building your vision together. 
+            Transparency guaranteed from day one.</p>
         <a href="contact.html" class="btn-gold reveal reveal-delay-3">
             <i class="fas fa-paper-plane"></i> Get Your Free Quote
         </a>
@@ -1308,7 +1529,8 @@
         <div class="footer-col">
             <h4>Contact</h4>
             <ul>
-                <li>+254 728 632259</li>
+                <li>+254 705 305 030 </li>
+                 <li>+254 701 051 440</li>
                 <li>info@trifort.co.ke</li>
                 <li>Nairobi, Kenya</li>
             </ul>
@@ -1412,22 +1634,48 @@ document.addEventListener('mousemove', e => {
 // ── SCROLL ──────────────────────────────────────
 const bar = document.getElementById('progressBar');
 const hdr = document.getElementById('header');
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
 let lastY = 0;
+
+if (navToggle && hdr && navMenu) {
+    navToggle.addEventListener('click', () => {
+        const isOpen = hdr.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (hdr.classList.contains('nav-open')) {
+                hdr.classList.remove('nav-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    });
+}
+
 window.addEventListener('scroll', () => {
     const y = window.scrollY;
     const h = document.body.scrollHeight - window.innerHeight;
-    bar.style.width = (y / h * 100) + '%';
-    if (y < 80) {
-        hdr.classList.add('hero-mode');
-        hdr.classList.remove('scrolled', 'hidden');
-    } else {
-        hdr.classList.remove('hero-mode');
-        hdr.classList.add('scrolled');
-        hdr.classList.toggle('hidden', y > lastY + 10 && y > 200);
-        if (y < lastY) hdr.classList.remove('hidden');
+    if (bar && h > 0) {
+        bar.style.width = (y / h * 100) + '%';
+    }
+    if (hdr) {
+        if (y < 80) {
+            hdr.classList.add('hero-mode');
+            hdr.classList.remove('scrolled', 'hidden');
+        } else {
+            hdr.classList.remove('hero-mode');
+            hdr.classList.add('scrolled');
+            hdr.classList.toggle('hidden', y > lastY + 10 && y > 200);
+            if (y < lastY) hdr.classList.remove('hidden');
+        }
     }
     lastY = y;
-    document.getElementById('backTop').classList.toggle('visible', y > 500);
+    const backTop = document.getElementById('backTop');
+    if (backTop) {
+        backTop.classList.toggle('visible', y > 500);
+    }
 }, { passive: true });
 
 // ── REVEAL ──────────────────────────────────────
