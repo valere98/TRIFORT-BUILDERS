@@ -641,7 +641,8 @@
             .nav-toggle { display: block; }
             .nav-menu {
                 position: fixed;
-                inset-inline: 0;
+                left: 0;
+                right: 0;
                 top: 64px;
                 padding: 16px 20px 24px;
                 background: rgba(252,250,247,0.98);
@@ -658,6 +659,14 @@
                 opacity: 1;
                 pointer-events: auto;
             }
+            .header.nav-open .nav-item {
+        color: var(--charcoal);
+ }
+     .header.nav-open .nav-item:hover,
+    .header.nav-open .nav-item.active {
+    background: rgba(30,61,43,0.06);
+    border-color: rgba(30,61,43,0.12);
+}
             .nav-item {
                 width: 100%;
                 text-align: left;
