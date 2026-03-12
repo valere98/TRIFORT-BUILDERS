@@ -153,7 +153,7 @@
 
         /* HERO */
         .page-hero {
-            height: 72vh; min-height: 520px;
+            height: 88vh; min-height: 620px;
             position: relative; display: flex; align-items: center;
             overflow: hidden; padding-top: 100px;
         }
@@ -333,20 +333,45 @@
             display: grid; grid-template-columns: repeat(3,1fr);
             gap: 2px; margin-top: 60px;
         }
-        .value-card {
-            background: rgba(255,255,255,0.04);
-            padding: 50px 40px; position: relative;
-            overflow: hidden; cursor: default;
-            transition: background 0.4s;
-        }
-        .value-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0;
-            height: 2px; background: var(--gold);
-            transform: scaleX(0); transform-origin: left;
-            transition: transform 0.5s ease;
-        }
-        .value-card:hover::before { transform: scaleX(1); }
-        .value-card:hover { background: rgba(255,255,255,0.07); }
+       @keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+}
+.value-card {
+    padding: 50px 40px; position: relative;
+    overflow: hidden; cursor: default;
+    background-size: cover; background-position: center;
+    transition: transform 0.4s;
+}
+.value-card:nth-child(1) {
+    background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=800&q=80');
+}
+.value-card:nth-child(2) {
+    background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80');
+}
+.value-card:nth-child(3) {
+    background-image: url('https://images.unsplash.com/photo-1535732759880-bbd5c7265e3f?w=600&auto=format&fit=crop');
+}
+.value-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(14, 35, 22, 0.75);
+    transition: background 0.4s; z-index: 0;
+}
+.value-card:hover::after { background: rgba(14, 35, 22, 0.55); }
+.value-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.5s ease; z-index: 2;
+}
+.value-card:hover::before { transform: scaleX(1); }
+.value-card > * { position: relative; z-index: 1; }
+.value-card.is-visible {
+    animation: zoomIn 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+.value-card.delay-1.is-visible { animation-delay: 0.05s; }
+.value-card.delay-2.is-visible { animation-delay: 0.2s; }
+.value-card.delay-3.is-visible { animation-delay: 0.35s; }
         .value-num {
             font-family: 'Cormorant Garamond', serif;
             font-size: 4rem; font-weight: 300;
@@ -713,7 +738,7 @@
             <span></span>
         </button>
         <nav class="nav-menu" id="navMenu">
-            <a href="index.html" class="nav-item active">Home</a>
+            <a href="index.html" class="nav-item ">Home</a>
             <a href="about.html" class="nav-item">About</a>
               <a href="services.html" class="nav-item">Services</a>
             <a href="projects.html" class="nav-item">Projects</a>
