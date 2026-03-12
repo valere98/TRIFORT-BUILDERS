@@ -1,4 +1,4 @@
- x<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -75,7 +75,9 @@
         .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-img { height: 80px; width: auto; display: block; }
         .logo-img-light { display: none; }
-        .logo-img-dark { display: bock; }
+        .logo-img-dark { display: block; }
+        .header.hero-mode .logo-img-dark { display: none; }
+        .header.hero-mode .logo-img-light { display: block; }
         .logo-text-block { display: flex; flex-direction: column; }
         .logo-name {
             font-family: 'Cormorant Garamond', serif;
