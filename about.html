@@ -1107,6 +1107,7 @@
         lastScroll = s;
         // Progress bar
         const pct = (s / (document.body.scrollHeight - window.innerHeight)) * 100;
+        
         const bar = document.getElementById('progressBar');
         if (bar && isFinite(pct)) {
             bar.style.width = pct + '%';
@@ -1114,6 +1115,7 @@
         // Back to top
         if (s > 500) document.getElementById('backToTop').classList.add('visible');
         else document.getElementById('backToTop').classList.remove('visible');
+
         // Timeline fill
         const wrap = document.getElementById('timelineWrap');
         if (wrap) {
