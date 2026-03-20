@@ -3,783 +3,1233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - TRIFORT Builders</title>
+    <title>Admin Dashboard – TRIFORT BUILDERS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --emerald: #0f4c3a;
-            --gold: #b49450;
-            --cream: #f5f1e8;
-            --dark-gray: #333;
-            --light-gray: #f9f9f9;
-            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --emerald:       #0f4c3a;
+            --emerald-deep:  #061a11;
+            --emerald-mid:   #1a6648;
+            --emerald-light: #1e7a52;
+            --gold:          #c8701a;
+            --gold-light:    #e09040;
+            --gold-pale:     rgba(200,112,26,0.12);
+            --cream:         #fcfaf7;
+            --sidebar-w:     260px;
+            --header-h:      68px;
+            --text-muted:    rgba(255,255,255,0.38);
+            --text-dim:      rgba(255,255,255,0.60);
+            --text-bright:   rgba(255,255,255,0.92);
+            --border:        rgba(255,255,255,0.07);
+            --border-em:     rgba(26,102,72,0.5);
+            --card-bg:       rgba(10,46,28,0.55);
+            --input-bg:      rgba(255,255,255,0.05);
+            --transition:    0.3s cubic-bezier(0.4,0,0.2,1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        html, body { height: 100%; font-family: 'Montserrat', sans-serif; overflow: hidden; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--light-gray);
-            color: var(--dark-gray);
-            font-size: 18px;
+            background: var(--emerald-deep);
+            color: var(--text-bright);
         }
 
-        .admin-header {
-            background: var(--emerald);
-            color: white;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: var(--shadow);
+        /* ─── ANIMATED BACKGROUND ─── */
+        .bg-canvas {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            overflow: hidden;
+        }
+        .bg-canvas::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 10% 20%, rgba(15,76,58,0.45) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 90% 80%, rgba(6,26,17,0.8) 0%, transparent 60%),
+                radial-gradient(ellipse 100% 100% at 50% 50%, rgba(10,38,22,0.95) 0%, transparent 100%);
+        }
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: orbFloat 12s ease-in-out infinite;
+        }
+        .bg-orb-1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(26,102,72,0.18) 0%, transparent 70%);
+            top: -100px; left: -100px;
+            animation-delay: 0s;
+        }
+        .bg-orb-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(200,112,26,0.06) 0%, transparent 70%);
+            bottom: -80px; right: 200px;
+            animation-delay: -4s;
+        }
+        .bg-orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(15,76,58,0.15) 0%, transparent 70%);
+            top: 40%; right: -50px;
+            animation-delay: -8s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%       { transform: translate(30px, -20px) scale(1.05); }
+            66%       { transform: translate(-20px, 30px) scale(0.95); }
         }
 
-        .admin-header h1 {
-            font-size: 1.8rem;
-            letter-spacing: 1px;
+        /* grid lines */
+        .bg-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(26,102,72,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,102,72,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
         }
 
-        .admin-header .welcome {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        /* ─── LAYOUT ─── */
+        .app { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100vh; }
+
+        /* ─── HEADER ─── */
+        .header {
+            height: var(--header-h);
+            background: rgba(6,26,17,0.85);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-em);
+            display: flex; align-items: center;
+            padding: 0 32px 0 0;
+            gap: 0;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 20;
         }
+        .header::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200,112,26,0.3), transparent);
+        }
+
+        .header-brand {
+            width: var(--sidebar-w);
+            padding: 0 28px;
+            display: flex; flex-direction: column; gap: 1px;
+            border-right: 1px solid var(--border-em);
+            height: 100%; justify-content: center;
+            flex-shrink: 0;
+        }
+        .header-brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem; font-weight: 600;
+            letter-spacing: 5px; text-transform: uppercase;
+            color: var(--text-bright);
+        }
+        .header-brand-sub {
+            font-size: 0.55rem; letter-spacing: 3.5px;
+            text-transform: uppercase; color: var(--gold-light);
+            font-weight: 500;
+        }
+
+        .header-center { flex: 1; padding: 0 28px; }
+        .header-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.05rem; font-weight: 400;
+            color: var(--text-dim); letter-spacing: 1px;
+        }
+        .header-title span { color: var(--gold-light); font-style: italic; }
+
+        .header-right { display: flex; align-items: center; gap: 16px; }
+
+        .header-user {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .user-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--emerald-mid), var(--emerald-light));
+            border: 1px solid rgba(200,112,26,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 600; color: var(--gold-light);
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .user-info { line-height: 1.3; }
+        .user-name { font-size: 0.72rem; font-weight: 600; color: var(--text-bright); }
+        .user-role { font-size: 0.56rem; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
 
         .logout-btn {
-            background: var(--gold);
-            color: var(--emerald);
-            padding: 10px 24px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 20px;
+            background: rgba(200,112,26,0.1);
+            border: 1px solid rgba(200,112,26,0.3);
+            border-radius: 8px;
+            color: var(--gold-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 2.5px; text-transform: uppercase;
             cursor: pointer;
-            transition: transform 0.3s ease;
-            font-size: 0.9rem;
+            transition: var(--transition);
         }
-
         .logout-btn:hover {
-            transform: scale(1.05);
+            background: rgba(200,112,26,0.2);
+            border-color: rgba(200,112,26,0.6);
+            transform: translateY(-1px);
         }
 
-        .admin-container {
-            display: flex;
-            min-height: calc(100vh - 80px);
-        }
+        /* ─── BODY ─── */
+        .body { display: flex; flex: 1; overflow: hidden; }
 
+        /* ─── SIDEBAR ─── */
         .sidebar {
-            width: 250px;
-            background: white;
-            border-right: 1px solid #ddd;
-            padding: 20px 0;
-            box-shadow: inset -2px 0 4px rgba(0,0,0,0.05);
+            width: var(--sidebar-w);
+            background: rgba(6,26,17,0.7);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-em);
+            display: flex; flex-direction: column;
+            padding: 24px 0;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-section-label {
+            padding: 0 24px 10px;
+            font-size: 0.5rem; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-muted);
+            font-weight: 600;
         }
 
         .sidebar-item {
-            padding: 12px 24px;
+            position: relative;
+            display: flex; align-items: center; gap: 12px;
+            padding: 13px 24px;
             cursor: pointer;
-            border-left: 4px solid transparent;
-            transition: all 0.3s ease;
             text-decoration: none;
-            color: var(--dark-gray);
-            display: block;
-            font-weight: 500;
+            color: var(--text-dim);
+            font-size: 0.72rem; font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+            margin: 1px 0;
+            overflow: hidden;
+        }
+        .sidebar-item::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(26,102,72,0.0), transparent);
+            transition: var(--transition);
+        }
+        .sidebar-item .nav-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .sidebar-item .nav-badge {
+            margin-left: auto;
+            background: var(--gold);
+            color: #fff;
+            font-size: 0.5rem; font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            letter-spacing: 0;
+            opacity: 0; transition: var(--transition);
         }
 
         .sidebar-item:hover {
-            background: var(--cream);
-            border-left-color: var(--gold);
-            color: var(--emerald);
+            color: var(--text-bright);
+            border-left-color: rgba(200,112,26,0.4);
+        }
+        .sidebar-item:hover::before { background: linear-gradient(90deg, rgba(26,102,72,0.25), transparent); }
+        .sidebar-item:hover .nav-icon {
+            background: rgba(26,102,72,0.3);
+            border-color: rgba(26,102,72,0.5);
+            color: var(--gold-light);
         }
 
         .sidebar-item.active {
-            background: var(--cream);
-            border-left-color: var(--emerald);
-            color: var(--emerald);
-            font-weight: 600;
+            color: var(--text-bright);
+            border-left-color: var(--gold);
+        }
+        .sidebar-item.active::before { background: linear-gradient(90deg, rgba(26,102,72,0.35), transparent); }
+        .sidebar-item.active .nav-icon {
+            background: rgba(200,112,26,0.15);
+            border-color: rgba(200,112,26,0.4);
+            color: var(--gold-light);
+            box-shadow: 0 0 12px rgba(200,112,26,0.15);
+        }
+        .sidebar-item.active .nav-badge { opacity: 1; }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 16px 24px;
         }
 
-        .main-content {
+        /* ─── MAIN ─── */
+        .main {
             flex: 1;
-            padding: 30px 40px;
             overflow-y: auto;
+            padding: 36px 40px;
+            scroll-behavior: smooth;
         }
+        .main::-webkit-scrollbar { width: 4px; }
+        .main::-webkit-scrollbar-track { background: transparent; }
+        .main::-webkit-scrollbar-thumb { background: rgba(26,102,72,0.4); border-radius: 4px; }
 
-        .section {
-            display: none;
-        }
-
+        /* ─── SECTIONS ─── */
+        .section { display: none; }
         .section.active {
             display: block;
-            animation: fadeIn 0.5s ease-out;
+            animation: sectionIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        @keyframes sectionIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* ─── PAGE HEADER ─── */
+        .page-header {
+            margin-bottom: 32px;
         }
-
-        .section h2 {
-            color: var(--emerald);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            letter-spacing: 0.5px;
+        .page-header .eyebrow {
+            font-size: 0.55rem; letter-spacing: 4px;
+            text-transform: uppercase; color: var(--gold-light);
+            font-weight: 600; margin-bottom: 8px;
         }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+        .page-header h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem; font-weight: 400;
+            color: var(--text-bright); line-height: 1.1;
         }
+        .page-header h2 em { font-style: italic; color: var(--text-muted); }
 
-        .submissions-list {
-            max-height: 600px;
-            overflow-y: auto;
+        /* ─── STATS GRID ─── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
         }
-
-        .submission-item {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            margin-bottom: 12px;
-            background: var(--cream);
-            transition: all 0.3s ease;
+        .stat-card {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-em);
+            border-radius: 16px;
+            padding: 24px 26px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: default;
         }
-
-        .submission-item:hover {
-            box-shadow: var(--shadow);
-            border-color: var(--gold);
+        .stat-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200,112,26,0.4), transparent);
         }
-
-        .submission-item h3 {
-            color: var(--emerald);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
+        .stat-card::after {
+            content: '';
+            position: absolute; bottom: -40px; right: -20px;
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            background: rgba(26,102,72,0.12);
+            transition: var(--transition);
         }
+        .stat-card:hover { transform: translateY(-3px); border-color: rgba(200,112,26,0.4); }
+        .stat-card:hover::after { transform: scale(1.4); }
 
-        .submission-item p {
-            margin: 4px 0;
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.4;
+        .stat-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(200,112,26,0.12);
+            border: 1px solid rgba(200,112,26,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.95rem; color: var(--gold-light);
+            margin-bottom: 16px;
         }
-
-        .submission-item .timestamp {
-            color: #999;
-            font-size: 0.85rem;
-            margin-top: 8px;
-            font-style: italic;
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 600;
+            color: var(--text-bright); line-height: 1;
+            margin-bottom: 6px;
+            counter-reset: num var(--n);
         }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--emerald);
+        .stat-label {
+            font-size: 0.62rem; letter-spacing: 2.5px;
+            text-transform: uppercase; color: var(--text-muted);
             font-weight: 500;
         }
+        .stat-trend {
+            position: absolute; top: 20px; right: 20px;
+            font-size: 0.6rem; letter-spacing: 1px;
+            color: rgba(100,220,120,0.7);
+            background: rgba(100,220,120,0.08);
+            border: 1px solid rgba(100,220,120,0.15);
+            border-radius: 20px;
+            padding: 3px 9px;
+        }
 
+        /* ─── GLASS CARD ─── */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-em);
+            border-radius: 16px;
+            padding: 28px 30px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(26,102,72,0.5), transparent);
+        }
+        .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.35rem; font-weight: 500;
+            color: var(--text-bright); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card-title i { color: var(--gold-light); font-size: 0.9rem; }
+
+        /* ─── SUBMISSIONS ─── */
+        .submissions-list { max-height: 560px; overflow-y: auto; padding-right: 4px; }
+        .submissions-list::-webkit-scrollbar { width: 3px; }
+        .submissions-list::-webkit-scrollbar-thumb { background: rgba(26,102,72,0.5); border-radius: 3px; }
+
+        .submission-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .submission-item::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            opacity: 0; transition: var(--transition);
+        }
+        .submission-item:hover {
+            background: rgba(26,102,72,0.12);
+            border-color: rgba(200,112,26,0.25);
+            transform: translateX(4px);
+        }
+        .submission-item:hover::before { opacity: 1; }
+
+        .submission-item h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem; font-weight: 500;
+            color: var(--text-bright); margin-bottom: 10px;
+        }
+        .submission-item p {
+            font-size: 0.75rem; color: var(--text-dim);
+            margin: 5px 0; line-height: 1.5;
+        }
+        .submission-item p strong { color: var(--gold-light); font-weight: 600; }
+        .submission-item .timestamp {
+            font-size: 0.62rem; color: var(--text-muted);
+            margin-top: 10px; font-style: italic;
+            letter-spacing: 0.3px;
+        }
+        .status-badge {
+            display: inline-block;
+            font-size: 0.55rem; letter-spacing: 2px;
+            text-transform: uppercase; font-weight: 600;
+            padding: 3px 10px; border-radius: 20px;
+            background: rgba(26,102,72,0.25);
+            border: 1px solid rgba(26,102,72,0.5);
+            color: rgba(80,220,130,0.85);
+        }
+        .status-badge.new { background: rgba(200,112,26,0.15); border-color: rgba(200,112,26,0.3); color: var(--gold-light); }
+
+        /* ─── FORM STYLES ─── */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-grid .full { grid-column: 1 / -1; }
+
+        .form-group { margin-bottom: 0; }
+        .form-group label {
+            display: block;
+            font-size: 0.58rem; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--text-muted);
+            font-weight: 600; margin-bottom: 9px;
+        }
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+            padding: 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem; font-weight: 300;
+            color: var(--text-bright);
             outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(180,148,80,0.1);
+            transition: var(--transition);
+            -webkit-appearance: none;
         }
+        .form-group select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.3)'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+        .form-group select option { background: #0a2e1c; color: #fff; }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.15); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(200,112,26,0.5);
+            box-shadow: 0 0 0 3px rgba(200,112,26,0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 110px; }
 
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
+        /* file input */
+        .form-group input[type="file"] {
+            padding: 10px 14px;
+            cursor: pointer;
+            color: var(--text-dim);
         }
+        .form-group input[type="file"]::-webkit-file-upload-button {
+            background: rgba(200,112,26,0.15);
+            border: 1px solid rgba(200,112,26,0.3);
+            border-radius: 6px;
+            color: var(--gold-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 1.5px;
+            padding: 5px 12px;
+            cursor: pointer;
+            margin-right: 12px;
+            transition: var(--transition);
+        }
+        .form-group input[type="file"]::-webkit-file-upload-button:hover { background: rgba(200,112,26,0.25); }
+
+        /* ─── BUTTONS ─── */
+        .btn-group { display: flex; gap: 12px; margin-top: 28px; }
 
         .btn-submit {
-            background: var(--emerald);
-            color: white;
             padding: 12px 32px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border: none; border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: #fff; cursor: pointer; position: relative; overflow: hidden;
+            transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(200,112,26,0.3);
         }
-
-        .btn-submit:hover {
-            transform: scale(1.05);
+        .btn-submit::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
         }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(200,112,26,0.5); }
+        .btn-submit:active { transform: translateY(0); }
 
         .btn-cancel {
+            padding: 12px 28px;
             background: transparent;
-            color: var(--emerald);
-            padding: 12px 32px;
-            border: 2px solid var(--emerald);
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            color: var(--text-dim); cursor: pointer;
+            transition: var(--transition);
         }
-
         .btn-cancel:hover {
-            background: var(--emerald);
-            color: white;
+            border-color: rgba(255,255,255,0.3);
+            color: var(--text-bright);
+            background: rgba(255,255,255,0.04);
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .btn-danger {
+            padding: 12px 28px;
+            background: rgba(220,60,60,0.1);
+            border: 1px solid rgba(220,60,60,0.3);
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 2.5px; text-transform: uppercase;
+            color: rgba(255,100,100,0.8); cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-danger:hover {
+            background: rgba(220,60,60,0.2);
+            border-color: rgba(220,60,60,0.5);
+            color: #ff8080;
         }
 
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .stat-card .stat-number {
-            font-size: 2.5rem;
-            color: var(--emerald);
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .stat-card .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
+        /* ─── MESSAGES ─── */
         .message {
-            padding: 15px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            display: none; margin-bottom: 20px;
+            animation: msgIn 0.3s ease;
+        }
+        @keyframes msgIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        .message.success { background: rgba(26,102,72,0.2); border: 1px solid rgba(50,200,100,0.3); color: rgba(100,230,140,0.9); }
+        .message.error   { background: rgba(220,60,60,0.12); border: 1px solid rgba(220,60,60,0.3); color: rgba(255,130,130,0.9); }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            text-align: center; padding: 48px 20px;
+            color: var(--text-muted);
+            font-size: 0.75rem; letter-spacing: 0.5px;
+        }
+        .empty-state i { font-size: 2.5rem; margin-bottom: 16px; display: block; color: rgba(26,102,72,0.5); }
+
+        /* ─── WELCOME CARD ─── */
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(15,76,58,0.4) 0%, rgba(26,102,72,0.15) 100%);
+            border: 1px solid rgba(200,112,26,0.2);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 24px;
+            position: relative; overflow: hidden;
+        }
+        .welcome-card::after {
+            content: 'TRIFORT';
+            position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 7rem; font-weight: 700; letter-spacing: 10px;
+            color: rgba(26,102,72,0.12);
+            pointer-events: none; white-space: nowrap;
+        }
+        .welcome-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem; font-weight: 400;
+            color: var(--text-bright); margin-bottom: 10px;
+        }
+        .welcome-card p {
+            font-size: 0.76rem; color: var(--text-dim);
+            line-height: 1.7; max-width: 480px;
+        }
+        .welcome-divider {
+            height: 1px; background: rgba(200,112,26,0.2);
+            margin: 20px 0;
+        }
+        .quick-links { display: flex; gap: 10px; flex-wrap: wrap; }
+        .quick-link {
+            display: flex; align-items: center; gap: 7px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            font-size: 0.65rem; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--text-dim);
+            cursor: pointer; text-decoration: none;
+            transition: var(--transition);
+        }
+        .quick-link:hover {
+            background: rgba(200,112,26,0.12);
+            border-color: rgba(200,112,26,0.3);
+            color: var(--gold-light);
+        }
+        .quick-link i { font-size: 0.7rem; }
+
+        /* ─── SETTINGS ZONE ─── */
+        .danger-zone {
+            border-color: rgba(220,60,60,0.2) !important;
+        }
+        .danger-zone::before { background: linear-gradient(90deg, transparent, rgba(220,60,60,0.3), transparent) !important; }
+        .danger-label {
+            font-size: 0.6rem; letter-spacing: 3px;
+            text-transform: uppercase; color: rgba(220,60,60,0.7);
+            font-weight: 600; margin-bottom: 10px;
+        }
+        .danger-desc { font-size: 0.76rem; color: var(--text-dim); margin-bottom: 18px; line-height: 1.6; }
+
+        /* ─── COUNTER ANIMATION ─── */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── SCROLLBAR ─── */
+        .main::-webkit-scrollbar { width: 4px; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            :root { --sidebar-w: 220px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .main { padding: 24px 20px; }
+        }
+        @media (max-width: 700px) {
+            .body { flex-direction: column; }
+            .sidebar { width: 100%; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; padding: 0; height: auto; }
+            .sidebar-section-label, .sidebar-divider { display: none; }
+            .sidebar-item { flex-direction: column; gap: 4px; padding: 12px 16px; font-size: 0.55rem; border-left: none; border-bottom: 2px solid transparent; }
+            .sidebar-item.active { border-left: none; border-bottom-color: var(--gold); }
+            .sidebar-item .nav-badge { display: none; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .header-brand { display: none; }
+        }
+
+        /* ─── PULSE DOT ─── */
+        .pulse-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(100,220,130,0.8);
+            box-shadow: 0 0 0 0 rgba(100,220,130,0.4);
+            animation: pulse 2.5s infinite;
+            display: inline-block; margin-right: 6px;
+        }
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(100,220,130,0.5); }
+            70%  { box-shadow: 0 0 0 6px rgba(100,220,130,0); }
+            100% { box-shadow: 0 0 0 0 rgba(100,220,130,0); }
+        }
+
+        /* ─── LOADING SHIMMER ─── */
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
             border-radius: 6px;
-            margin-bottom: 20px;
-            display: none;
+            height: 16px;
         }
+        @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        @media (max-width: 768px) {
-            .admin-container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                display: flex;
-                border: none;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .sidebar-item {
-                flex: 1;
-                border-left: none;
-                border-bottom: 4px solid transparent;
-                padding: 12px 16px;
-            }
-
-            .sidebar-item.active,
-            .sidebar-item:hover {
-                border-left: none;
-                border-bottom-color: var(--gold);
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .btn-group {
-                flex-direction: column;
-            }
+        /* stagger animation for stat cards */
+        .stats-grid .stat-card:nth-child(1) { animation: statIn 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
+        .stats-grid .stat-card:nth-child(2) { animation: statIn 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both; }
+        .stats-grid .stat-card:nth-child(3) { animation: statIn 0.6s 0.3s cubic-bezier(0.16,1,0.3,1) both; }
+        @keyframes statIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="admin-header">
-        <h1>TRIFORT Builders Admin</h1>
-        <div class="welcome">
-            <span id="userEmail">Admin</span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-    </div>
 
-    <div class="admin-container">
-        <div class="sidebar">
-            <a href="#" class="sidebar-item active" onclick="switchSection('dashboard')">Dashboard</a>
-            <a href="#" class="sidebar-item" onclick="switchSection('contacts')">Contact Submissions</a>
-            <a href="#" class="sidebar-item" onclick="switchSection('quotes')">Quote Requests</a>
-            <a href="#" class="sidebar-item" onclick="switchSection('projects')">Manage Projects</a>
-            <a href="#" class="sidebar-item" onclick="switchSection('settings')">Settings</a>
-        </div>
+<!-- Background -->
+<div class="bg-canvas">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+</div>
 
-        <div class="main-content">
-            <!-- Dashboard Section -->
+<div class="app">
+
+    <!-- ── HEADER ── -->
+    <header class="header">
+        <div class="header-brand">
+            <div class="header-brand-name">Tri-Fort</div>
+            <div class="header-brand-sub">Construction</div>
+        </div>
+        <div class="header-center">
+            <div class="header-title">Admin <span>Control Centre</span></div>
+        </div>
+        <div class="header-right">
+            <div class="header-user">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <div class="user-name" id="userEmail">Administrator</div>
+                    <div class="user-role"><span class="pulse-dot"></span>Active Session</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- ── BODY ── -->
+    <div class="body">
+
+        <!-- ── SIDEBAR ── -->
+        <nav class="sidebar">
+            <div class="sidebar-section-label">Navigation</div>
+
+            <a href="#" class="sidebar-item active" onclick="switchSection('dashboard', this)">
+                <div class="nav-icon"><i class="fas fa-th-large"></i></div>
+                Dashboard
+            </a>
+            <a href="#" class="sidebar-item" onclick="switchSection('contacts', this)">
+                <div class="nav-icon"><i class="fas fa-envelope"></i></div>
+                Contact Submissions
+                <span class="nav-badge" id="contactsBadge">—</span>
+            </a>
+            <a href="#" class="sidebar-item" onclick="switchSection('quotes', this)">
+                <div class="nav-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                Quote Requests
+                <span class="nav-badge" id="quotesBadge">—</span>
+            </a>
+            <a href="#" class="sidebar-item" onclick="switchSection('projects', this)">
+                <div class="nav-icon"><i class="fas fa-hard-hat"></i></div>
+                Manage Projects
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+
+            <a href="#" class="sidebar-item" onclick="switchSection('settings', this)">
+                <div class="nav-icon"><i class="fas fa-sliders-h"></i></div>
+                Settings
+            </a>
+        </nav>
+
+        <!-- ── MAIN ── -->
+        <main class="main">
+
+            <!-- DASHBOARD -->
             <section id="dashboard" class="section active">
-                <h2>Dashboard Overview</h2>
+                <div class="page-header">
+                    <div class="eyebrow">Overview</div>
+                    <h2>Dashboard <em>Overview</em></h2>
+                </div>
+
                 <div class="stats-grid">
                     <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="stat-number" id="totalContacts">—</div>
                         <div class="stat-label">Total Contacts</div>
-                        <div class="stat-number" id="totalContacts">0</div>
+                        <div class="stat-trend">↑ Live</div>
                     </div>
                     <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-number" id="totalQuotes">—</div>
                         <div class="stat-label">Quote Requests</div>
-                        <div class="stat-number" id="totalQuotes">0</div>
+                        <div class="stat-trend">↑ Live</div>
                     </div>
                     <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-hard-hat"></i></div>
+                        <div class="stat-number" id="totalProjects">—</div>
                         <div class="stat-label">Active Projects</div>
-                        <div class="stat-number" id="totalProjects">0</div>
+                        <div class="stat-trend">↑ Live</div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3 style="color: var(--emerald); margin-bottom: 15px;">Quick Stats</h3>
-                    <p style="margin: 10px 0; color: #666;">Welcome to your admin dashboard. Manage all submissions, projects, and site content from here.</p>
-                    <p style="margin: 10px 0; color: #666;">Use the navigation menu on the left to browse different sections.</p>
+                <div class="welcome-card">
+                    <h3>Welcome back, Administrator</h3>
+                    <p>Manage all client submissions, project portfolios, and site content from this central command centre. Use the navigation panel to move between sections.</p>
+                    <div class="welcome-divider"></div>
+                    <div class="quick-links">
+                        <a href="#" class="quick-link" onclick="switchSection('contacts', document.querySelectorAll('.sidebar-item')[1])">
+                            <i class="fas fa-envelope"></i> View Contacts
+                        </a>
+                        <a href="#" class="quick-link" onclick="switchSection('quotes', document.querySelectorAll('.sidebar-item')[2])">
+                            <i class="fas fa-file-invoice-dollar"></i> View Quotes
+                        </a>
+                        <a href="#" class="quick-link" onclick="switchSection('projects', document.querySelectorAll('.sidebar-item')[3])">
+                            <i class="fas fa-plus"></i> Add Project
+                        </a>
+                    </div>
                 </div>
             </section>
 
-            <!-- Contact Submissions Section -->
+            <!-- CONTACTS -->
             <section id="contacts" class="section">
-                <h2>Contact Form Submissions</h2>
+                <div class="page-header">
+                    <div class="eyebrow">Inbox</div>
+                    <h2>Contact <em>Submissions</em></h2>
+                </div>
                 <div id="contactMessage" class="message"></div>
                 <div class="card">
+                    <div class="card-title"><i class="fas fa-inbox"></i> All Messages</div>
                     <div id="contactsList" class="submissions-list">
-                        <p style="color: #999; text-align: center; padding: 20px;">Loading contact submissions...</p>
+                        <div class="empty-state">
+                            <i class="fas fa-envelope-open-text"></i>
+                            Loading contact submissions…
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Quote Requests Section -->
+            <!-- QUOTES -->
             <section id="quotes" class="section">
-                <h2>Quote Requests</h2>
+                <div class="page-header">
+                    <div class="eyebrow">Requests</div>
+                    <h2>Quote <em>Requests</em></h2>
+                </div>
                 <div id="quoteMessage" class="message"></div>
                 <div class="card">
+                    <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> All Requests</div>
                     <div id="quotesList" class="submissions-list">
-                        <p style="color: #999; text-align: center; padding: 20px;">Loading quote requests...</p>
+                        <div class="empty-state">
+                            <i class="fas fa-file-alt"></i>
+                            Loading quote requests…
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Projects Management Section -->
+            <!-- PROJECTS -->
             <section id="projects" class="section">
-                <h2>Manage Projects</h2>
+                <div class="page-header">
+                    <div class="eyebrow">Portfolio</div>
+                    <h2>Manage <em>Projects</em></h2>
+                </div>
                 <div id="projectMessage" class="message"></div>
-                
+
                 <div class="card">
-                    <h3 style="color: var(--emerald); margin-bottom: 15px;">Add New Project</h3>
+                    <div class="card-title"><i class="fas fa-plus-circle"></i> Add New Project</div>
                     <form id="projectForm" onsubmit="submitProject(event)" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="projectTitle">Project Title *</label>
-                            <input type="text" id="projectTitle" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectDescription">Description *</label>
-                            <textarea id="projectDescription" name="description" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectCategory">Category *</label>
-                            <select id="projectCategory" name="category" required>
-                                <option value="">Select Category</option>
-                                <option value="Residential">Residential</option>
-                                <option value="Commercial">Commercial</option>
-                                <option value="Renovation">Renovation</option>
-                                <option value="Construction">Construction</option>
-                                <option value="Interior Design">Interior Design</option>
-                                <option value="Exterior Work">Exterior Work</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectStatus">Status *</label>
-                            <select id="projectStatus" name="status" required>
-                                <option value="ongoing">Ongoing</option>
-                                <option value="completed">Completed</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectLocation">Location</label>
-                            <input type="text" id="projectLocation" name="location">
-                        </div>
-                        <div class="form-group">
-                            <label for="projectDate">Completion Date</label>
-                            <input type="date" id="projectDate" name="completion_date">
-                        </div>
-                        <div class="form-group">
-                            <label for="projectImage">Project Image</label>
-                            <input type="file" id="projectImage" name="image" accept="image/*">
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label for="projectTitle">Project Title *</label>
+                                <input type="text" id="projectTitle" name="title" placeholder="e.g. Westlands Luxury Apartments" required>
+                            </div>
+                            <div class="form-group full">
+                                <label for="projectDescription">Description *</label>
+                                <textarea id="projectDescription" name="description" placeholder="Describe the project scope, materials, and highlights…" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectCategory">Category *</label>
+                                <select id="projectCategory" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Renovation">Renovation</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Interior Design">Interior Design</option>
+                                    <option value="Exterior Work">Exterior Work</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectStatus">Status *</label>
+                                <select id="projectStatus" name="status" required>
+                                    <option value="ongoing">Ongoing</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="projectLocation">Location</label>
+                                <input type="text" id="projectLocation" name="location" placeholder="e.g. Nairobi, Kenya">
+                            </div>
+                            <div class="form-group">
+                                <label for="projectDate">Completion Date</label>
+                                <input type="date" id="projectDate" name="completion_date">
+                            </div>
+                            <div class="form-group full">
+                                <label for="projectImage">Project Image</label>
+                                <input type="file" id="projectImage" name="image" accept="image/*">
+                            </div>
                         </div>
                         <div class="btn-group">
-                            <button type="submit" class="btn-submit">Add Project</button>
-                            <button type="reset" class="btn-cancel">Clear</button>
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-plus" style="margin-right:8px;font-size:0.7rem;"></i>
+                                Add Project
+                            </button>
+                            <button type="reset" class="btn-cancel">Clear Form</button>
                         </div>
                     </form>
                 </div>
 
                 <div class="card">
-                    <h3 style="color: var(--emerald); margin-bottom: 15px;">Current Projects</h3>
+                    <div class="card-title"><i class="fas fa-layer-group"></i> Current Projects</div>
                     <div id="projectsList" class="submissions-list">
-                        <p style="color: #999; text-align: center; padding: 20px;">Loading projects...</p>
+                        <div class="empty-state">
+                            <i class="fas fa-hard-hat"></i>
+                            Loading projects…
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Settings Section -->
+            <!-- SETTINGS -->
             <section id="settings" class="section">
-                <h2>Settings</h2>
+                <div class="page-header">
+                    <div class="eyebrow">Configuration</div>
+                    <h2>Account <em>Settings</em></h2>
+                </div>
+
                 <div class="card">
-                    <h3 style="color: var(--emerald); margin-bottom: 15px;">Account Security</h3>
-                    <div class="form-group">
-                        <label for="currentPassword">Current Password</label>
-                        <input type="password" id="currentPassword" name="currentPassword">
-                    </div>
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <input type="password" id="newPassword" name="newPassword">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword">
+                    <div class="card-title"><i class="fas fa-shield-alt"></i> Account Security</div>
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="••••••••">
+                        </div>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn-submit" onclick="changePassword()">Update Password</button>
+                        <button type="button" class="btn-submit" onclick="changePassword()">
+                            <i class="fas fa-key" style="margin-right:8px;font-size:0.7rem;"></i>
+                            Update Password
+                        </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h3 style="color: var(--emerald); margin-bottom: 15px;">Danger Zone</h3>
-                    <p style="color: #d9534f; font-weight: 500; margin-bottom: 15px;">Logout will require you to login again.</p>
-                    <button type="button" class="btn-cancel" style="border-color: #d9534f; color: #d9534f;" onclick="logout()">Logout</button>
+                <div class="card danger-zone">
+                    <div class="danger-label"><i class="fas fa-exclamation-triangle" style="margin-right:6px;"></i>Danger Zone</div>
+                    <p class="danger-desc">Logging out will end your current session. You will be redirected to the login page and will need to authenticate again to access the admin panel.</p>
+                    <button type="button" class="btn-danger" onclick="logout()">
+                        <i class="fas fa-sign-out-alt" style="margin-right:8px;"></i>
+                        Sign Out
+                    </button>
                 </div>
             </section>
-        </div>
+
+        </main>
     </div>
+</div>
 
-    <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('adminToken');
-            const userEmail = localStorage.getItem('adminEmail');
-            
-            if (!token) {
-                window.location.href = '/admin-login.html';
-                return;
-            }
+<script>
+    // ── AUTH CHECK ──
+    document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('adminToken');
+        const userEmail = localStorage.getItem('adminEmail');
 
-            if (userEmail) {
-                document.getElementById('userEmail').textContent = userEmail;
-            }
-
-            verifyToken();
-            loadDashboardData();
-            loadContacts();
-            loadQuotes();
-            loadProjects();
-        });
-
-        function switchSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Remove active class from sidebar items
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Add active class to clicked sidebar item
-            event.target.classList.add('active');
-
-            // Reload data when switching sections
-            if (sectionId === 'contacts') loadContacts();
-            if (sectionId === 'quotes') loadQuotes();
-            if (sectionId === 'projects') loadProjects();
-        }
-
-        async function verifyToken() {
-            try {
-                const token = localStorage.getItem('adminToken');
-                const response = await fetch('http://localhost:5000/api/auth/verify', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    logout();
-                }
-            } catch (error) {
-                console.error('Token verification failed:', error);
-            }
-        }
-
-        async function loadDashboardData() {
-            try {
-                const token = localStorage.getItem('adminToken');
-                
-                // Fetch actual data from backend
-                const contactsResponse = await fetch('http://localhost:5000/api/contact/all', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                const quotesResponse = await fetch('http://localhost:5000/api/quote/all', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                const projectsResponse = await fetch('http://localhost:5000/api/projects', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                
-                if (contactsResponse.ok) {
-                    const contacts = await contactsResponse.json();
-                    document.getElementById('totalContacts').textContent = contacts.length;
-                }
-                
-                if (quotesResponse.ok) {
-                    const quotes = await quotesResponse.json();
-                    document.getElementById('totalQuotes').textContent = quotes.length;
-                }
-                
-                if (projectsResponse.ok) {
-                    const projects = await projectsResponse.json();
-                    document.getElementById('totalProjects').textContent = projects.length;
-                }
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
-        }
-
-        async function loadContacts() {
-            try {
-                const token = localStorage.getItem('adminToken');
-                const response = await fetch('http://localhost:5000/api/contact/all', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const contactsList = document.getElementById('contactsList');
-                
-                if (response.ok) {
-                    const contacts = await response.json();
-                    if (contacts.length === 0) {
-                        contactsList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No contact submissions yet.</p>';
-                    } else {
-                        contactsList.innerHTML = contacts.map(contact => `
-                            <div class="submission-item">
-                                <h3>${contact.name || 'Unknown'}</h3>
-                                <p><strong>Email:</strong> ${contact.email || 'N/A'}</p>
-                                <p><strong>Phone:</strong> ${contact.phone || 'N/A'}</p>
-                                <p><strong>Subject:</strong> ${contact.subject || 'N/A'}</p>
-                                <p><strong>Message:</strong> ${contact.message || 'N/A'}</p>
-                                <p><strong>Status:</strong> <span style="color: var(--emerald); font-weight: 600;">${contact.status || 'new'}</span></p>
-                                <div class="timestamp">${new Date(contact.created_at).toLocaleString()}</div>
-                            </div>
-                        `).join('');
-                    }
-                } else {
-                    contactsList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Unable to load contacts.</p>';
-                }
-            } catch (error) {
-                console.error('Error loading contacts:', error);
-                document.getElementById('contactsList').innerHTML = '<p style="color: #d9534f; text-align: center; padding: 20px;">Error loading contacts.</p>';
-            }
-        }
-
-        async function loadQuotes() {
-            try {
-                const token = localStorage.getItem('adminToken');
-                const response = await fetch('http://localhost:5000/api/quote/all', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const quotesList = document.getElementById('quotesList');
-                
-                if (response.ok) {
-                    const quotes = await response.json();
-                    if (quotes.length === 0) {
-                        quotesList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No quote requests yet.</p>';
-                    } else {
-                        quotesList.innerHTML = quotes.map(quote => `
-                            <div class="submission-item">
-                                <h3>${quote.name || 'Unknown'}</h3>
-                                <p><strong>Email:</strong> ${quote.email || 'N/A'}</p>
-                                <p><strong>Phone:</strong> ${quote.phone || 'N/A'}</p>
-                                <p><strong>Project Type:</strong> ${quote.projectType || 'N/A'}</p>
-                                <p><strong>Details:</strong> ${quote.details || 'N/A'}</p>
-                                <p><strong>Status:</strong> <span style="color: var(--emerald); font-weight: 600;">${quote.status || 'new'}</span></p>
-                                <div class="timestamp">${new Date(quote.created_at).toLocaleString()}</div>
-                            </div>
-                        `).join('');
-                    }
-                } else {
-                    quotesList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Unable to load quotes.</p>';
-                }
-            } catch (error) {
-                console.error('Error loading quotes:', error);
-                document.getElementById('quotesList').innerHTML = '<p style="color: #d9534f; text-align: center; padding: 20px;">Error loading quotes.</p>';
-            }
-        }
-
-        async function loadProjects() {
-            try {
-                const token = localStorage.getItem('adminToken');
-                const response = await fetch('http://localhost:5000/api/projects', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const projectsList = document.getElementById('projectsList');
-                
-                if (response.ok) {
-                    const projects = await response.json();
-                    if (projects.length === 0) {
-                        projectsList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">No projects yet.</p>';
-                    } else {
-                        projectsList.innerHTML = projects.map(project => `
-                            <div class="submission-item">
-                                <h3>${project.title || 'Unknown'}</h3>
-                                <p><strong>Category:</strong> ${project.category || 'N/A'}</p>
-                                <p><strong>Status:</strong> ${project.status || 'N/A'}</p>
-                                <p><strong>Location:</strong> ${project.location || 'N/A'}</p>
-                                <p><strong>Description:</strong> ${project.description || 'N/A'}</p>
-                                <p><strong>Completion Date:</strong> ${project.completion_date ? new Date(project.completion_date).toLocaleDateString() : 'N/A'}</p>
-                                ${project.image ? `<p><strong>Image:</strong> <a href="http://localhost:5000/uploads/${project.image}" target="_blank">View Image</a></p>` : ''}
-                                <div class="timestamp">Added: ${new Date(project.created_at).toLocaleString()}</div>
-                            </div>
-                        `).join('');
-                    }
-                } else {
-                    projectsList.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Unable to load projects.</p>';
-                }
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                document.getElementById('projectsList').innerHTML = '<p style="color: #d9534f; text-align: center; padding: 20px;">Error loading projects.</p>';
-            }
-        }
-
-        async function submitProject(event) {
-            event.preventDefault();
-            
-            const formData = new FormData();
-            formData.append('title', document.getElementById('projectTitle').value);
-            formData.append('description', document.getElementById('projectDescription').value);
-            formData.append('category', document.getElementById('projectCategory').value);
-            formData.append('status', document.getElementById('projectStatus').value);
-            formData.append('location', document.getElementById('projectLocation').value);
-            formData.append('completion_date', document.getElementById('projectDate').value);
-            
-            const imageFile = document.getElementById('projectImage').files[0];
-            if (imageFile) {
-                formData.append('image', imageFile);
-            }
-            
-            const token = localStorage.getItem('adminToken');
-
-            try {
-                const response = await fetch('http://localhost:5000/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: formData
-                });
-
-                const projectMessage = document.getElementById('projectMessage');
-                
-                if (response.ok) {
-                    document.getElementById('projectForm').reset();
-                    projectMessage.textContent = 'Project added successfully!';
-                    projectMessage.className = 'message success';
-                    projectMessage.style.display = 'block';
-                    setTimeout(() => {
-                        projectMessage.style.display = 'none';
-                        loadProjects();
-                    }, 3000);
-                } else {
-                    const error = await response.json();
-                    projectMessage.textContent = error.error || 'Error adding project. Please try again.';
-                    projectMessage.className = 'message error';
-                    projectMessage.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                const projectMessage = document.getElementById('projectMessage');
-                projectMessage.textContent = 'Error adding project. Please check your connection.';
-                projectMessage.className = 'message error';
-                projectMessage.style.display = 'block';
-            }
-        }
-
-        function changePassword() {
-            const current = document.getElementById('currentPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
-
-            if (!current || !newPass || !confirm) {
-                alert('Please fill in all password fields');
-                return;
-            }
-
-            if (newPass !== confirm) {
-                alert('New passwords do not match');
-                return;
-            }
-
-            alert('Password change functionality coming soon');
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
-        }
-
-        function logout() {
-            localStorage.removeItem('adminToken');
-            localStorage.removeItem('adminEmail');
+        if (!token) {
             window.location.href = '/admin-login.html';
+            return;
         }
-    </script>
+
+        if (userEmail) {
+            document.getElementById('userEmail').textContent = userEmail;
+            const initials = userEmail.charAt(0).toUpperCase();
+            document.getElementById('userAvatar').textContent = initials;
+        }
+
+        verifyToken();
+        loadDashboardData();
+        loadContacts();
+        loadQuotes();
+        loadProjects();
+    });
+
+    // ── SECTION SWITCH ──
+    function switchSection(sectionId, clickedEl) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        if (clickedEl) clickedEl.classList.add('active');
+
+        if (sectionId === 'contacts') loadContacts();
+        if (sectionId === 'quotes')   loadQuotes();
+        if (sectionId === 'projects') loadProjects();
+        return false;
+    }
+
+    // Override clicks to pass `this`
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+        });
+    });
+
+    // ── ANIMATE COUNTER ──
+    function animateCount(el, target) {
+        let start = 0;
+        const duration = 800;
+        const step = timestamp => {
+            if (!start) start = timestamp;
+            const progress = Math.min((timestamp - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(eased * target);
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+
+    // ── VERIFY TOKEN ──
+    async function verifyToken() {
+        try {
+            const token = localStorage.getItem('adminToken');
+            const res = await fetch('http://localhost:5000/api/auth/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (!res.ok) logout();
+        } catch (e) { console.error('Token verify failed:', e); }
+    }
+
+    // ── DASHBOARD DATA ──
+    async function loadDashboardData() {
+        try {
+            const token = localStorage.getItem('adminToken');
+            const headers = { 'Authorization': `Bearer ${token}` };
+
+            const [cRes, qRes, pRes] = await Promise.all([
+                fetch('http://localhost:5000/api/contact/all', { headers }),
+                fetch('http://localhost:5000/api/quote/all',   { headers }),
+                fetch('http://localhost:5000/api/projects',    { headers }),
+            ]);
+
+            if (cRes.ok) {
+                const contacts = await cRes.json();
+                animateCount(document.getElementById('totalContacts'), contacts.length);
+                document.getElementById('contactsBadge').textContent = contacts.length;
+            }
+            if (qRes.ok) {
+                const quotes = await qRes.json();
+                animateCount(document.getElementById('totalQuotes'), quotes.length);
+                document.getElementById('quotesBadge').textContent = quotes.length;
+            }
+            if (pRes.ok) {
+                const projects = await pRes.json();
+                animateCount(document.getElementById('totalProjects'), projects.length);
+            }
+        } catch (e) { console.error('Dashboard data error:', e); }
+    }
+
+    // ── CONTACTS ──
+    async function loadContacts() {
+        const token = localStorage.getItem('adminToken');
+        const list  = document.getElementById('contactsList');
+        try {
+            const res = await fetch('http://localhost:5000/api/contact/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const contacts = await res.json();
+                if (!contacts.length) {
+                    list.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i>No contact submissions yet.</div>`;
+                } else {
+                    list.innerHTML = contacts.map(c => `
+                        <div class="submission-item">
+                            <h3>${c.name || 'Unknown'}</h3>
+                            <p><strong>Email:</strong> ${c.email || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${c.phone || 'N/A'}</p>
+                            <p><strong>Subject:</strong> ${c.subject || 'N/A'}</p>
+                            <p><strong>Message:</strong> ${c.message || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge ${c.status === 'new' ? 'new' : ''}">${c.status || 'new'}</span></p>
+                            <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>${new Date(c.created_at).toLocaleString()}</div>
+                        </div>`).join('');
+                }
+            } else {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i>Unable to load contacts.</div>`;
+            }
+        } catch (e) {
+            list.innerHTML = `<div class="empty-state"><i class="fas fa-wifi"></i>Connection error loading contacts.</div>`;
+        }
+    }
+
+    // ── QUOTES ──
+    async function loadQuotes() {
+        const token = localStorage.getItem('adminToken');
+        const list  = document.getElementById('quotesList');
+        try {
+            const res = await fetch('http://localhost:5000/api/quote/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const quotes = await res.json();
+                if (!quotes.length) {
+                    list.innerHTML = `<div class="empty-state"><i class="fas fa-file-alt"></i>No quote requests yet.</div>`;
+                } else {
+                    list.innerHTML = quotes.map(q => `
+                        <div class="submission-item">
+                            <h3>${q.name || 'Unknown'}</h3>
+                            <p><strong>Email:</strong> ${q.email || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${q.phone || 'N/A'}</p>
+                            <p><strong>Project Type:</strong> ${q.projectType || 'N/A'}</p>
+                            <p><strong>Details:</strong> ${q.details || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge ${q.status === 'new' ? 'new' : ''}">${q.status || 'new'}</span></p>
+                            <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>${new Date(q.created_at).toLocaleString()}</div>
+                        </div>`).join('');
+                }
+            } else {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i>Unable to load quotes.</div>`;
+            }
+        } catch (e) {
+            list.innerHTML = `<div class="empty-state"><i class="fas fa-wifi"></i>Connection error loading quotes.</div>`;
+        }
+    }
+
+    // ── PROJECTS ──
+    async function loadProjects() {
+        const token = localStorage.getItem('adminToken');
+        const list  = document.getElementById('projectsList');
+        try {
+            const res = await fetch('http://localhost:5000/api/projects', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const projects = await res.json();
+                if (!projects.length) {
+                    list.innerHTML = `<div class="empty-state"><i class="fas fa-hard-hat"></i>No projects yet.</div>`;
+                } else {
+                    list.innerHTML = projects.map(p => `
+                        <div class="submission-item">
+                            <h3>${p.title || 'Unknown'}</h3>
+                            <p><strong>Category:</strong> ${p.category || 'N/A'}</p>
+                            <p><strong>Status:</strong> <span class="status-badge ${p.status === 'ongoing' ? 'new' : ''}">${p.status || 'N/A'}</span></p>
+                            <p><strong>Location:</strong> ${p.location || 'N/A'}</p>
+                            <p><strong>Description:</strong> ${p.description || 'N/A'}</p>
+                            <p><strong>Completion Date:</strong> ${p.completion_date ? new Date(p.completion_date).toLocaleDateString() : 'N/A'}</p>
+                            ${p.image ? `<p><strong>Image:</strong> <a href="http://localhost:5000/uploads/${p.image}" target="_blank" style="color:var(--gold-light);text-decoration:none;">View Image →</a></p>` : ''}
+                            <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>Added: ${new Date(p.created_at).toLocaleString()}</div>
+                        </div>`).join('');
+                }
+            } else {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i>Unable to load projects.</div>`;
+            }
+        } catch (e) {
+            list.innerHTML = `<div class="empty-state"><i class="fas fa-wifi"></i>Connection error loading projects.</div>`;
+        }
+    }
+
+    // ── SUBMIT PROJECT ──
+    async function submitProject(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('title',           document.getElementById('projectTitle').value);
+        formData.append('description',     document.getElementById('projectDescription').value);
+        formData.append('category',        document.getElementById('projectCategory').value);
+        formData.append('status',          document.getElementById('projectStatus').value);
+        formData.append('location',        document.getElementById('projectLocation').value);
+        formData.append('completion_date', document.getElementById('projectDate').value);
+
+        const imageFile = document.getElementById('projectImage').files[0];
+        if (imageFile) formData.append('image', imageFile);
+
+        const token   = localStorage.getItem('adminToken');
+        const msgEl   = document.getElementById('projectMessage');
+
+        try {
+            const res = await fetch('http://localhost:5000/api/projects', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            if (res.ok) {
+                document.getElementById('projectForm').reset();
+                msgEl.textContent = '✓ Project added successfully!';
+                msgEl.className   = 'message success';
+                msgEl.style.display = 'block';
+                setTimeout(() => { msgEl.style.display = 'none'; loadProjects(); }, 3000);
+            } else {
+                const err = await res.json();
+                msgEl.textContent = err.error || 'Error adding project.';
+                msgEl.className   = 'message error';
+                msgEl.style.display = 'block';
+            }
+        } catch (e) {
+            msgEl.textContent = 'Connection error. Please try again.';
+            msgEl.className   = 'message error';
+            msgEl.style.display = 'block';
+        }
+    }
+
+    // ── CHANGE PASSWORD ──
+    function changePassword() {
+        const current = document.getElementById('currentPassword').value;
+        const newPass = document.getElementById('newPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
+        if (!current || !newPass || !confirm) { alert('Please fill in all password fields'); return; }
+        if (newPass !== confirm) { alert('New passwords do not match'); return; }
+        alert('Password change functionality coming soon');
+        ['currentPassword','newPassword','confirmPassword'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    // ── LOGOUT ──
+    function logout() {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminEmail');
+        window.location.href = '/admin-login.html';
+    }
+</script>
 </body>
 </html>
