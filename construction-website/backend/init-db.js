@@ -27,9 +27,9 @@ const initializeDatabase = async () => {
             });
 
             await adminUser.save();
-            console.log('Admin user created successfully');
-            console.log(`Email: ${process.env.ADMIN_EMAIL}`);
-            console.log(`Password: ${process.env.ADMIN_PASSWORD}`);
+            console.log("INPUT:", req.body);
+            console.log("DB USER:", user);
+            console.log("DB PASSWORD:", user?.password_hash);
         }
 
         mongoose.connection.close();
