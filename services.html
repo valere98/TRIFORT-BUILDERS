@@ -144,6 +144,7 @@
             display: flex; align-items: center;
             overflow: hidden;
         }
+
         .hero-overlay {
             position: absolute; inset: 0; z-index: 1;
             background: linear-gradient(130deg, rgba(9, 32, 16, 0.9) 0%,
@@ -857,8 +858,8 @@
                 <span class="logo-tagline">Transparency through builds</span>
             </div>
         </a>
-<button class="menu-toggle" id="menuToggle">
-  <span></span>
+<button class="menu-toggle" id="menuToggle">  
+    <span></span>
   <span></span>
   <span></span>
 </button>
@@ -1490,17 +1491,34 @@ const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 let lastY = 0;
 
+const menuToggle = document.getElementById('menuToggle');
+
+function toggleNav() {
+    const isOpen = hdr.classList.toggle('nav-open');
+    if (navToggle) navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    if (menuToggle) menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
 if (navToggle && hdr && navMenu) {
-    navToggle.addEventListener('click', () => {
-        const isOpen = hdr.classList.toggle('nav-open');
-        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    });
+    navToggle.addEventListener('click', toggleNav);
+    };
     navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             if (hdr.classList.contains('nav-open')) {
                 hdr.classList.remove('nav-open');
                 navToggle.setAttribute('aria-expanded', 'false');
             }
+        });
+    });
+
+
+
+if (menuToggle && hdr && navMenu) {
+    menuToggle.addEventListener('click', toggleNav);
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hdr.classList.remove('nav-open');
+            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
         });
     });
 }
