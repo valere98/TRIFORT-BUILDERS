@@ -63,7 +63,7 @@ nav a:hover,nav a.cur{color:var(--G)!important;}
 /* ─── HERO ───────────────────────────────────────────────── */
 .hbtn{display:none;}
 .hero{position:relative;height:100vh;min-height:640px;
-      display:flex;align-items:center;overflow:hidden;}
+      display:flex;align-items:center;overflow:hidden;padding-top:102px;}
 .hbg{position:absolute;inset:0;
      background:linear-gradient(140deg,#060e08 0%,#1a3526 55%,#0d2318 100%);}
 .hlines{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
@@ -179,8 +179,12 @@ nav a:hover,nav a.cur{color:var(--G)!important;}
 
 
 /* ─── FILTER BAR ─────────────────────────────────────────── */
+/* ─── FILTER BAR ─────────────────────────────────────────── */
 .fbar{background:var(--BG);border-bottom:1px solid var(--SD);
-      position:sticky;top:0;z-index:100;}
+      position:relative; /* This makes it stay in its natural place */
+      z-index:10;        /* Lowered z-index so it doesn't overlap other elements */
+}
+
 .fbar-in{max-width:1440px;margin:0 auto;padding:18px 48px;
          display:flex;align-items:center;justify-content:space-between;
          gap:18px;flex-wrap:wrap;}
@@ -552,7 +556,7 @@ footer{background:var(--ED);border-top:1px solid rgba(255,255,255,.07);
         <a href="services.html" class="nav-item">Services</a>
       <a href="projects.html" class="cur">Projects</a>
       <a href="reviews.html">Reviews</a>
-      <a href="contact.html" class="ncta">Contact Us</a>
+      <a href="contact.html">Contact Us</a>
       <a href="subcontractor.html">Subcontractors</a>
       <a href="admin-login.html" class="nav-item admin-link">Admin</a>
     </nav>
@@ -963,8 +967,8 @@ async function loadProjects(){
         status:p.status==='ongoing'?'Ongoing':'Completed',
         value:'',client:'',
         desc:p.description||'',
-        img:p.image?`http://localhost:5000/uploads/${p.image}`:'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80',
-        imgBefore:'',imgAfter:'',stages:[],currentStage:0,
+        img:p.image_url?p.image_url:(p.image?`http://localhost:5000/uploads/${p.image}`:'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80'),
+       imgBefore:'',imgAfter:'',stages:[],currentStage:0,
         testimonial:{},videoUrl:'',featured:false
       }));
     }
@@ -1100,9 +1104,11 @@ const FILTER_FN={
   Infrastructure:p=>p.type==='Infrastructure',
   Renovation:p=>p.type==='Renovation',
 };
+loadProjects().then(projects=>{window._projects=projects;render('all');});
 
- loadProjects().then(projects=>{window._projects=projects;render('all');});
+function render(filter){
   const ps=window._projects||DEFAULTS;
+
   const list=ps.filter(FILTER_FN[filter]||(()=>true));
   document.getElementById('CNT').textContent=list.length+' Project'+(list.length!==1?'s':'');
   const pg=document.getElementById('PG');
@@ -1115,7 +1121,7 @@ const FILTER_FN={
   // re-attach cursor hover for new cards
   pg.querySelectorAll('.card').forEach(el=>{
     el.addEventListener('mouseenter',()=>{CEl.style.width='18px';CEl.style.height='18px';CREl.style.width='60px';CREl.style.height='60px';CREl.style.opacity='.28';});
-    el.addEventListener('mouseleave',()=>{CEl.style.width='10px';CEl.style.height='10px';CREl.style.width='36px';CREl.style.height='36px';CREl.style.opacity='.5';});
+   el.addEventListener('mouseleave',()=>{CEl.style.width='10px';CEl.style.height='10px';CREl.style.width='36px';CREl.style.height='36px';CREl.style.opacity='.5';});
   });
 }
 
