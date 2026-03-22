@@ -618,8 +618,8 @@ function handleForm(formId,btnId,msgId,url,extra){
     setTimeout(()=>{msg.style.display='none';},6000);
   });
 }
-handleForm('CFORM','CBTN','CMSG','http://localhost:5000/api/contact/submit');
-handleForm('QFORM','QBTN','QMSG','http://localhost:5000/api/quote/request',()=>({service:document.getElementById('SVC').value}));
+handleForm('CFORM','CBTN','CMSG','https://your-live-backend.com/api/contact/submit');
+handleForm('QFORM','QBTN','QMSG','https://your-live-backend.com/api/quote/request',()=>({service:document.getElementById('SVC').value}));
 </script>
 </body>
 </html>
