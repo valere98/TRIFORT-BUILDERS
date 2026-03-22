@@ -979,7 +979,7 @@
 <script>
     // Add this at the very top of your script section
 const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'https://your-live-backend.com' 
+    ? 'https://trifort-builders.onrender.com' 
     : 'https://your-backend-api-url.vercel.app'; // <--- PUT YOUR BACKEND URL HERE
     // ── AUTH CHECK ──
     document.addEventListener('DOMContentLoaded', () => {
@@ -1056,9 +1056,9 @@ const API_BASE_URL = window.location.hostname === 'localhost'
             const headers = { 'Authorization': `Bearer ${token}` };
 
             const [cRes, qRes, pRes] = await Promise.all([
-                fetch('https://your-live-backend.com/api/contact/all', { headers }),
-                fetch('https://your-live-backend.com/api/quote/all',   { headers }),
-                fetch('https://your-live-backend.com/api/projects',    { headers }),
+                fetch('https://trifort-builders.onrender.com/api/contact/all', { headers }),
+                fetch('https://trifort-builders.onrender.com/api/quote/all',   { headers }),
+                fetch('https://trifort-builders.onrender.com/api/projects',    { headers }),
             ]);
 
             if (cRes.ok) {
@@ -1083,7 +1083,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('contactsList');
         try {
-            const res = await fetch('https://your-live-backend.com/api/contact/all', {
+            const res = await fetch('https://trifort-builders.onrender.com/api/contact/all', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
@@ -1115,7 +1115,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('quotesList');
         try {
-            const res = await fetch('https://your-live-backend.com/api/quote/all', {
+            const res = await fetch('https://trifort-builders.onrender.com/api/quote/all', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
@@ -1147,7 +1147,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('projectsList');
         try {
-            const res = await fetch('https://your-live-backend.com/api/projects', {
+            const res = await fetch('https://trifort-builders.onrender.com/api/projects', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
@@ -1163,7 +1163,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
                             <p><strong>Location:</strong> ${p.location || 'N/A'}</p>
                             <p><strong>Description:</strong> ${p.description || 'N/A'}</p>
                             <p><strong>Completion Date:</strong> ${p.completion_date ? new Date(p.completion_date).toLocaleDateString() : 'N/A'}</p>
-                            ${p.image ? `<p><strong>Image:</strong> <a href="https://your-live-backend.com/uploads/${p.image}" target="_blank" style="color:var(--gold-light);text-decoration:none;">View Image →</a></p>` : ''}
+                            ${p.image ? `<p><strong>Image:</strong> <a href="https://trifort-builders.onrender.com/uploads/${p.image}" target="_blank" style="color:var(--gold-light);text-decoration:none;">View Image →</a></p>` : ''}
                             <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>Added: ${new Date(p.created_at).toLocaleString()}</div>
                         </div>`).join('');
                 }
@@ -1193,7 +1193,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         const msgEl   = document.getElementById('projectMessage');
 
         try {
-            const res = await fetch('https://your-live-backend.com/api/projects', {
+            const res = await fetch('https://trifort-builders.onrender.com/api/projects', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
