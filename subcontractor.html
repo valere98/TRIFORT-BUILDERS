@@ -1107,9 +1107,24 @@
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
-            console.log('Form submitted:', data);
-            alert('Thank you for your application! We will review your submission and contact you within 2 business days.');
-            this.reset();
+            const btn = this.querySelector('.submit-btn');
+            btn.disabled = true; btn.textContent = 'Submitting...';
+            fetch('https://trifort-builders.onrender.com/api/subcontractor/submit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(() => {
+                btn.textContent = 'Application Submitted!';
+                btn.style.background = '#2a5a3e';
+                document.getElementById('subcontractorForm').reset();
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.textContent = 'Submit Application';
+                alert('Network error. Please try again.');
+            });
         });
     </script>
 </body>
