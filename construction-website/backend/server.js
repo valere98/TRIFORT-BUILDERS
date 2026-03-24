@@ -7,15 +7,11 @@ const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const contactRoutes = require('./routes/contact');
 const quoteRoutes = require('./routes/quote');
+const subcontractorRoutes = require('./routes/subcontractor');
 
 const app = express();
 
-const cors = require('cors');
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://your-trifort-builders.vercel.app'], // Add your actual Vercel URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -42,6 +38,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/quote', quoteRoutes);
+app.use('/api/subcontractor', subcontractorRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
