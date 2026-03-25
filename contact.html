@@ -426,7 +426,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
         <div class="fg"><label>Last Name *</label><input type="text" name="lname" placeholder="Kariuki" required></div>
       </div>
       <div class="fg rl d2"><label>Email Address *</label><input type="email" name="email" placeholder="james@company.co.ke" required></div>
-      <div class="fg rl d2"><label>Phone</label><input type="tel" name="phone" placeholder="+254 700 000 000"></div>
+      <div class="fg rl d2"><label>Phone</label><input type="tel" name="phone" name="phone" placeholder="+254 700 000 000"></div>
       <div class="fg rl d3"><label>Subject</label><input type="text" name="subject" placeholder="New project enquiry"></div>
       <div class="fg rl d3"><label>Message *</label><textarea name="message" rows="4" placeholder="Tell us about your project or enquiry…" required></textarea></div>
       <div class="rl d4">
@@ -458,7 +458,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
         <div class="fg"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
       </div>
       <div class="fg rr d2"><label>Email *</label><input type="email" name="email" placeholder="your@email.com" required></div>
-      <div class="fg rr d3"><label>Phone</label><input type="tel" name="phone" placeholder="+254 700 000 000"></div>
+      <div class="fg rr d3"><label>Phone</label><input type="tel" name="phone" name="phone" placeholder="+254 700 000 000"></div>
       <div class="fg rr d3"><label>Project Location</label><input type="text" name="location" placeholder="e.g. Kilimani, Nairobi"></div>
       <div class="fg rr d4"><label>Project Details *</label><textarea name="details" rows="4" placeholder="Describe your project — size, scope, timeline…" required></textarea></div>
       <div class="rr" style="transition-delay:.45s">
@@ -618,7 +618,7 @@ function handleForm(formId,btnId,msgId,url,extra){
     setTimeout(()=>{msg.style.display='none';},6000);
   });
 }
-handleForm('CFORM','CBTN','CMSG','https://trifort-builders.onrender.com/api/contact/submit');
+handleForm('CFORM','CBTN','CMSG','https://your-render-app-name.onrender.com/api/contact/submit');
 handleForm('QFORM','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
 </script>
 </body>
