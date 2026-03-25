@@ -3,7 +3,7 @@ const router = express.Router();
 const Quote = require('../models/Quote');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Handle quote requests
+
 router.post('/request', async (req, res) => {
     try {
         const { name, email, phone, projectType, details } = req.body;
@@ -33,7 +33,7 @@ router.post('/request', async (req, res) => {
     }
 });
 
-// Get all quote requests (admin only)
+
 router.get('/all', authMiddleware, async (req, res) => {
     try {
         const quotes = await Quote.find().sort({ created_at: -1 });
@@ -44,7 +44,7 @@ router.get('/all', authMiddleware, async (req, res) => {
     }
 });
 
-// Update quote status (admin only)
+
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { status } = req.body;
@@ -65,7 +65,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// Delete quote request (admin only)
+
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         const quote = await Quote.findByIdAndDelete(req.params.id);

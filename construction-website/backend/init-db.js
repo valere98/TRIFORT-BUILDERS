@@ -4,7 +4,7 @@ const User = require('./models/User');
 
 const initializeDatabase = async () => {
     try {
-        // Connect to MongoDB
+        
         await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -12,13 +12,13 @@ const initializeDatabase = async () => {
 
         console.log('MongoDB connected');
 
-        // Check if admin user already exists
+        
         const adminExists = await User.findOne({ email: process.env.ADMIN_EMAIL });
 
         if (adminExists) {
             console.log('Admin user already exists');
         } else {
-            // Create default admin user
+            
             const adminUser = new User({
                 name: process.env.ADMIN_NAME || 'Administrator',
                 email: process.env.ADMIN_EMAIL,
