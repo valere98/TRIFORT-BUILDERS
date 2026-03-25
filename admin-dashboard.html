@@ -759,6 +759,11 @@
                 Quote Requests
                 <span class="nav-badge" id="quotesBadge">â€”</span>
             </a>
+            <a href="#" class="sidebar-item" onclick="switchSection('subcontractors', this)">
+                <div class="nav-icon"><i class="fas fa-hard-hat"></i></div>
+                Subcontractors
+                <span class="nav-badge" id="subcontractorsBadge">—</span>
+            </a>
             <a href="#" class="sidebar-item" onclick="switchSection('projects', this)">
                 <div class="nav-icon"><i class="fas fa-hard-hat"></i></div>
                 Manage Projects
@@ -932,6 +937,19 @@
             </section>
 
             <!-- SETTINGS -->
+            <section id="subcontractors" class="section">
+                <div class="page-header">
+                    <div class="eyebrow">Applications</div>
+                    <h2>Subcontractor <em>Applications</em></h2>
+                </div>
+                <div id="subcontractorsMessage" class="message"></div>
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-hard-hat"></i> All Applications</div>
+                    <div id="subcontractorsList" class="submissions-list">
+                        <div class="empty-state"><i class="fas fa-hard-hat"></i>Loading applications…</div>
+                    </div>
+                </div>
+            </section>
             <section id="settings" class="section">
                 <div class="page-header">
                     <div class="eyebrow">Configuration</div>

@@ -958,7 +958,7 @@ const DEFAULTS = [
 // ── DATA LAYER (localStorage persists admin edits) ────────────
 async function loadProjects(){
   try{
-    const res=await fetch('https://your-live-backend.com/api/projects');
+    const res=await fetch('https://trifort-builders.onrender.com/api/projects');
     if(res.ok){
       const data=await res.json();
       return data.map(p=>({
@@ -970,7 +970,7 @@ async function loadProjects(){
         status:p.status==='ongoing'?'Ongoing':'Completed',
         value:'',client:'',
         desc:p.description||'',
-        img:p.image_url?p.image_url:(p.image?`https://your-live-backend.com/uploads/${p.image}`:'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80'),
+        img:p.image_url?p.image_url:(p.image?`https://trifort-builders.onrender.com/uploads/${p.image}`:'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80'),
        imgBefore:'',imgAfter:'',stages:[],currentStage:0,
         testimonial:{},videoUrl:'',featured:false
       }));
