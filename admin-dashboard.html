@@ -37,7 +37,7 @@
             color: var(--text-bright);
         }
 
-        /* ─── ANIMATED BACKGROUND ─── */
+        
         .bg-canvas {
             position: fixed; inset: 0; z-index: 0; pointer-events: none;
             overflow: hidden;
@@ -80,7 +80,7 @@
             66%       { transform: translate(-20px, 30px) scale(0.95); }
         }
 
-        /* grid lines */
+        
         .bg-grid {
             position: absolute; inset: 0;
             background-image:
@@ -89,10 +89,10 @@
             background-size: 48px 48px;
         }
 
-        /* ─── LAYOUT ─── */
+        
         .app { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100vh; }
 
-        /* ─── HEADER ─── */
+        
         .header {
             height: var(--header-h);
             background: rgba(6,26,17,0.85);
@@ -175,10 +175,10 @@
             transform: translateY(-1px);
         }
 
-        /* ─── BODY ─── */
+        
         .body { display: flex; flex: 1; overflow: hidden; }
 
-        /* ─── SIDEBAR ─── */
+        
         .sidebar {
             width: var(--sidebar-w);
             background: rgba(6,26,17,0.7);
@@ -268,7 +268,7 @@
             margin: 16px 24px;
         }
 
-        /* ─── MAIN ─── */
+        
         .main {
             flex: 1;
             overflow-y: auto;
@@ -279,7 +279,7 @@
         .main::-webkit-scrollbar-track { background: transparent; }
         .main::-webkit-scrollbar-thumb { background: rgba(26,102,72,0.4); border-radius: 4px; }
 
-        /* ─── SECTIONS ─── */
+        
         .section { display: none; }
         .section.active {
             display: block;
@@ -290,7 +290,7 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── PAGE HEADER ─── */
+        
         .page-header {
             margin-bottom: 32px;
         }
@@ -306,7 +306,7 @@
         }
         .page-header h2 em { font-style: italic; color: var(--text-muted); }
 
-        /* ─── STATS GRID ─── */
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -370,7 +370,7 @@
             padding: 3px 9px;
         }
 
-        /* ─── GLASS CARD ─── */
+        
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(16px);
@@ -394,7 +394,7 @@
         }
         .card-title i { color: var(--gold-light); font-size: 0.9rem; }
 
-        /* ─── SUBMISSIONS ─── */
+        
         .submissions-list { max-height: 560px; overflow-y: auto; padding-right: 4px; }
         .submissions-list::-webkit-scrollbar { width: 3px; }
         .submissions-list::-webkit-scrollbar-thumb { background: rgba(26,102,72,0.5); border-radius: 3px; }
@@ -448,7 +448,7 @@
         }
         .status-badge.new { background: rgba(200,112,26,0.15); border-color: rgba(200,112,26,0.3); color: var(--gold-light); }
 
-        /* ─── FORM STYLES ─── */
+        
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-grid .full { grid-column: 1 / -1; }
 
@@ -484,7 +484,7 @@
         }
         .form-group textarea { resize: vertical; min-height: 110px; }
 
-        /* file input */
+        
         .form-group input[type="file"] {
             padding: 10px 14px;
             cursor: pointer;
@@ -505,7 +505,7 @@
         }
         .form-group input[type="file"]::-webkit-file-upload-button:hover { background: rgba(200,112,26,0.25); }
 
-        /* ─── BUTTONS ─── */
+        
         .btn-group { display: flex; gap: 12px; margin-top: 28px; }
 
         .btn-submit {
@@ -560,7 +560,7 @@
             color: #ff8080;
         }
 
-        /* ─── MESSAGES ─── */
+        
         .message {
             padding: 14px 18px;
             border-radius: 10px;
@@ -572,7 +572,7 @@
         .message.success { background: rgba(26,102,72,0.2); border: 1px solid rgba(50,200,100,0.3); color: rgba(100,230,140,0.9); }
         .message.error   { background: rgba(220,60,60,0.12); border: 1px solid rgba(220,60,60,0.3); color: rgba(255,130,130,0.9); }
 
-        /* ─── EMPTY STATE ─── */
+        
         .empty-state {
             text-align: center; padding: 48px 20px;
             color: var(--text-muted);
@@ -580,7 +580,7 @@
         }
         .empty-state i { font-size: 2.5rem; margin-bottom: 16px; display: block; color: rgba(26,102,72,0.5); }
 
-        /* ─── WELCOME CARD ─── */
+        
         .welcome-card {
             background: linear-gradient(135deg, rgba(15,76,58,0.4) 0%, rgba(26,102,72,0.15) 100%);
             border: 1px solid rgba(200,112,26,0.2);
@@ -629,7 +629,7 @@
         }
         .quick-link i { font-size: 0.7rem; }
 
-        /* ─── SETTINGS ZONE ─── */
+        
         .danger-zone {
             border-color: rgba(220,60,60,0.2) !important;
         }
@@ -641,16 +641,16 @@
         }
         .danger-desc { font-size: 0.76rem; color: var(--text-dim); margin-bottom: 18px; line-height: 1.6; }
 
-        /* ─── COUNTER ANIMATION ─── */
+        
         @keyframes countUp {
             from { opacity: 0; transform: translateY(10px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── SCROLLBAR ─── */
+        
         .main::-webkit-scrollbar { width: 4px; }
 
-        /* ─── RESPONSIVE ─── */
+        
         @media (max-width: 900px) {
             :root { --sidebar-w: 220px; }
             .stats-grid { grid-template-columns: 1fr 1fr; }
@@ -668,7 +668,7 @@
             .header-brand { display: none; }
         }
 
-        /* ─── PULSE DOT ─── */
+        
         .pulse-dot {
             width: 6px; height: 6px; border-radius: 50%;
             background: rgba(100,220,130,0.8);
@@ -682,7 +682,7 @@
             100% { box-shadow: 0 0 0 0 rgba(100,220,130,0); }
         }
 
-        /* ─── LOADING SHIMMER ─── */
+        
         .shimmer {
             background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
             background-size: 200% 100%;
@@ -692,7 +692,7 @@
         }
         @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
-        /* stagger animation for stat cards */
+        
         .stats-grid .stat-card:nth-child(1) { animation: statIn 0.6s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
         .stats-grid .stat-card:nth-child(2) { animation: statIn 0.6s 0.2s cubic-bezier(0.16,1,0.3,1) both; }
         .stats-grid .stat-card:nth-child(3) { animation: statIn 0.6s 0.3s cubic-bezier(0.16,1,0.3,1) both; }
@@ -704,7 +704,7 @@
 </head>
 <body>
 
-<!-- Background -->
+
 <div class="bg-canvas">
     <div class="bg-grid"></div>
     <div class="bg-orb bg-orb-1"></div>
@@ -714,7 +714,7 @@
 
 <div class="app">
 
-    <!-- ── HEADER ── -->
+    
     <header class="header">
         <div class="header-brand">
             <div class="header-brand-name">Tri-Fort</div>
@@ -738,10 +738,10 @@
         </div>
     </header>
 
-    <!-- ── BODY ── -->
+    
     <div class="body">
 
-        <!-- ── SIDEBAR ── -->
+        
         <nav class="sidebar">
             <div class="sidebar-section-label">Navigation</div>
 
@@ -778,10 +778,10 @@
             </a>
         </nav>
 
-        <!-- ── MAIN ── -->
+        
         <main class="main">
 
-            <!-- DASHBOARD -->
+            
             <section id="dashboard" class="section active">
                 <div class="page-header">
                     <div class="eyebrow">Overview</div>
@@ -827,7 +827,7 @@
                 </div>
             </section>
 
-            <!-- CONTACTS -->
+            
             <section id="contacts" class="section">
                 <div class="page-header">
                     <div class="eyebrow">Inbox</div>
@@ -845,7 +845,7 @@
                 </div>
             </section>
 
-            <!-- QUOTES -->
+            
             <section id="quotes" class="section">
                 <div class="page-header">
                     <div class="eyebrow">Requests</div>
@@ -863,7 +863,7 @@
                 </div>
             </section>
 
-            <!-- PROJECTS -->
+            
             <section id="projects" class="section">
                 <div class="page-header">
                     <div class="eyebrow">Portfolio</div>
@@ -936,7 +936,7 @@
                 </div>
             </section>
 
-            <!-- SETTINGS -->
+            
             <section id="subcontractors" class="section">
                 <div class="page-header">
                     <div class="eyebrow">Applications</div>
@@ -995,11 +995,11 @@
 </div>
 
 <script>
-    // Add this at the very top of your script section
+    
 const API_BASE_URL = window.location.hostname === 'localhost' 
     ? 'https://trifort-builders.onrender.com' 
-    : 'https://trifort-builders.onrender.com'; // <--- PUT YOUR BACKEND URL HERE
-    // ── AUTH CHECK ──
+    : 'https://trifort-builders.onrender.com'; 
+    
     document.addEventListener('DOMContentLoaded', () => {
         const token = localStorage.getItem('adminToken');
         const userEmail = localStorage.getItem('adminEmail');
@@ -1022,7 +1022,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         loadProjects();
     });
 
-    // ── SECTION SWITCH ──
+    
     function switchSection(sectionId, clickedEl) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
@@ -1035,14 +1035,14 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         return false;
     }
 
-    // Override clicks to pass `this`
+    
     document.querySelectorAll('.sidebar-item').forEach(item => {
         item.addEventListener('click', function(e) {
             e.preventDefault();
         });
     });
 
-    // ── ANIMATE COUNTER ──
+    
     function animateCount(el, target) {
         let start = 0;
         const duration = 800;
@@ -1056,7 +1056,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         requestAnimationFrame(step);
     }
 
-    // ── VERIFY TOKEN ──
+    
     async function verifyToken() {
         try {
             const token = localStorage.getItem('adminToken');
@@ -1067,7 +1067,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         } catch (e) { console.error('Token verify failed:', e); }
     }
 
-    // ── DASHBOARD DATA ──
+    
     async function loadDashboardData() {
         try {
             const token = localStorage.getItem('adminToken');
@@ -1096,7 +1096,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         } catch (e) { console.error('Dashboard data error:', e); }
     }
 
-    // ── CONTACTS ──
+    
     async function loadContacts() {
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('contactsList');
@@ -1128,7 +1128,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         }
     }
 
-    // ── QUOTES ──
+    
     async function loadQuotes() {
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('quotesList');
@@ -1160,7 +1160,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         }
     }
 
-    // ── PROJECTS ──
+    
     async function loadProjects() {
         const token = localStorage.getItem('adminToken');
         const list  = document.getElementById('projectsList');
@@ -1193,7 +1193,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         }
     }
 
-    // ── SUBMIT PROJECT ──
+    
     async function submitProject(event) {
         event.preventDefault();
         const formData = new FormData();
@@ -1235,7 +1235,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         }
     }
 
-    // ── CHANGE PASSWORD ──
+    
     function changePassword() {
         const current = document.getElementById('currentPassword').value;
         const newPass = document.getElementById('newPassword').value;
@@ -1246,7 +1246,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         ['currentPassword','newPassword','confirmPassword'].forEach(id => document.getElementById(id).value = '');
     }
 
-    // ── LOGOUT ──
+    
     function logout() {
         localStorage.removeItem('adminToken');
         localStorage.removeItem('adminEmail');

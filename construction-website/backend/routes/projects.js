@@ -5,13 +5,13 @@ const path = require('path');
 const Project = require('../models/Project');
 const authMiddleware = require('../middleware/authMiddleware');
 
-// Configure multer for file uploads
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '../uploads/'));
     },
     filename: (req, file, cb) => {
-        // Generate unique filename
+        
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, 'project-' + uniqueSuffix + path.extname(file.originalname));
     }
@@ -20,10 +20,10 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
+        fileSize: 5 * 1024 * 1024 
     },
     fileFilter: (req, file, cb) => {
-        // Check if file is an image
+        
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
         } else {
@@ -32,7 +32,7 @@ const upload = multer({
     }
 });
 
-// GET all projects
+
 router.get('/', async (req, res) => {
     try {
         const projects = await Project.find().sort({ created_at: -1 });
@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET single project by ID
+
 router.get('/:id', async (req, res) => {
     try {
         const project = await Project.findById(req.params.id);
@@ -56,7 +56,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST a new project (admin only)
+
 router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     try {
         const { title, description, category, location, completion_date, status } = req.body;
@@ -87,7 +87,7 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     }
 });
 
-// PUT update project (admin only)
+
 router.put('/:id', authMiddleware, async (req, res) => {
     try {
         const { title, description, image, location, completion_date } = req.body;
@@ -112,7 +112,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// DELETE project (admin only)
+
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         const project = await Project.findByIdAndDelete(req.params.id);
