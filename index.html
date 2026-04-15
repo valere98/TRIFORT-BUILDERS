@@ -92,7 +92,7 @@
         
         .header {
             position: fixed; top: 0; left: 0; right: 0;
-            background: rgba(252,250,247,0.96);
+            background: #1e3d2b;
             backdrop-filter: blur(14px);
             box-shadow: 0 1px 0 var(--sand);
             z-index: 1000;
@@ -104,7 +104,7 @@
         }
         .header.hidden { transform: translateY(-100%); }
         .header.scrolled {
-            background: rgba(252,250,247,0.97);
+            background: #163623;
             box-shadow: 0 4px 40px rgba(30,61,43,0.08);
         }
         .header-container {
@@ -114,7 +114,7 @@
         }
 
         
-        .logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-img { height: 80px; width: auto; display: block; transition: opacity .4s; }
         .logo-img-light { display: none; }
         .logo-img-dark { display: block; }
@@ -123,8 +123,8 @@
         .logo-text-block { display: flex; flex-direction: column; }
         .logo-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem; font-weight: 600;
-            letter-spacing: 3px; color: var(--emerald);
+            font-size: 1.4rem; font-weight: 600;
+            letter-spacing: 5px; color: white;
             text-transform: uppercase; line-height: 1;
         }
         .logo-tagline {
@@ -136,23 +136,25 @@
         .header.hero-mode .logo-tagline { color: var(--gold-light); }
 
         
-        .nav-menu {
+    .nav-menu {
             display: flex;
             align-items: center;
-            gap: 4px;
-        }
+            gap: 4px; margin-left: auto;}
+
         .nav-item {
             font-size: 0.72rem;
             font-weight: 500;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: var(--charcoal);
+            color:  rgba(255,255,255,0.85);
             text-decoration: none;
             padding: 8px 14px;
             border-radius: 4px;
             border: 1px solid transparent;
             transition: all .3s;
         }
+        
+        
         .nav-item:hover,
         .nav-item.active {
             background: rgba(30,61,43,0.06);
@@ -1155,12 +1157,11 @@
 </div>
 
 
+
 <header class="header hero-mode" id="header">
     <div class="header-container">
         <a href="index.html" class="logo-wrap">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQAAAARACAIAAAD...TRUNCATED_FOR_READABILITY..." />
-
-          
+           <img class="logo-img" src="construction-website/frontend/images/logo.png" alt="TRI-FORT Construction Logo" />
             <div class="logo-text-block">
                 <span class="logo-name">TRI-FORT CONSTRUCTION</span>
                 <span class="logo-tagline">Transparency Through Builds.</span>
@@ -1173,12 +1174,12 @@
         <nav class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-item active">Home</a>
             <a href="about.html" class="nav-item">About</a>
-              <a href="services.html" class="nav-item">Services</a>git add
+              <a href="services.html" class="nav-item">Services</a>
             <a href="projects.html" class="nav-item">Projects</a>
             <a href="reviews.html" class="nav-item">Reviews</a>
             <a href="contact.html" class="nav-item">Contact</a>
             <a href="subcontractor.html" class="nav-item">Sub-contractor</a>
-            <a href="admin-login.html" class="nav-item admin-link">Admin</a>
+            <a href="admin-login.html" class="nav-item">Admin</a>
         </nav>
     </div>
 </header>
