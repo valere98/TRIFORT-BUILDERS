@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact');
+const supabase = require('../config/supabase'); // ← replace Contact model
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateContactForm, sanitizeObject } = require('../utils/validators');
 
@@ -24,17 +24,25 @@ router.post('/submit', async (req, res) => {
             ['name', 'subject', 'message', 'phone']
         );
 
-        // Create contact record
-        const contact = new Contact({
-            name: sanitized.name,
-            email: sanitized.email.toLowerCase(),
-            subject: sanitized.subject || 'No subject',
-            message: sanitized.message,
-            phone: sanitized.phone || '',
-            status: 'new'
-        });
-        
-        await contact.save();
+        // Insert contact record into Supabase
+        const { data: contact, error } = await supabase
+            .from('contacts')
+            .insert([{
+                name: sanitized.name,
+                email: sanitized.email.toLowerCase(),
+                subject: sanitized.subject || 'No subject',
+                message: sanitized.message,
+                phone: sanitized.phone || '',
+                status: 'new'
+            }])
+            .select()
+            .single();
+
+        if (error) {
+            console.error('✗ Supabase insert error:', error.message);
+            return res.status(500).json({ error: 'Failed to submit contact form' });
+        }
+
         console.log('✓ Contact form submitted:', contact.email);
         
         res.json({ 
@@ -50,7 +58,16 @@ router.post('/submit', async (req, res) => {
 // GET: Fetch all contacts (admin only)
 router.get('/all', authMiddleware, async (req, res) => {
     try {
-        const contacts = await Contact.find().sort({ created_at: -1 });
+        const { data: contacts, error } = await supabase
+            .from('contacts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('✗ Supabase fetch error:', error.message);
+            return res.status(500).json({ error: 'Failed to fetch contacts' });
+        }
+
         res.json(contacts);
     } catch (error) {
         console.error('✗ Error fetching contacts:', error.message);
@@ -68,13 +85,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid status value' });
         }
         
-        const contact = await Contact.findByIdAndUpdate(
-            req.params.id,
-            { status },
-            { new: true }
-        );
-        
-        if (!contact) {
+        const { data: contact, error } = await supabase
+            .from('contacts')
+            .update({ status })
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !contact) {
             return res.status(404).json({ error: 'Contact not found' });
         }
         
@@ -88,9 +106,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // DELETE: Remove contact (admin only)
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const contact = await Contact.findByIdAndDelete(req.params.id);
-        
-        if (!contact) {
+        const { data: contact, error } = await supabase
+            .from('contacts')
+            .delete()
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !contact) {
             return res.status(404).json({ error: 'Contact not found' });
         }
         
@@ -102,4 +125,3 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
-

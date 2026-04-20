@@ -1,7 +1,7 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const supabase = require('./config/supabase'); // ← Supabase client
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
@@ -12,28 +12,37 @@ const subcontractorRoutes = require('./routes/subcontractor');
 const app = express();
 
 // Validate environment variables on startup
-const requiredEnvVars = ['MONGO_URI', 'JWT_SECRET'];
+const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'JWT_SECRET'];
 const missingEnvVars = requiredEnvVars.filter(key => !process.env[key]);
 if (missingEnvVars.length > 0) {
     console.error('✗ Missing required environment variables:', missingEnvVars.join(', '));
     process.exit(1);
 }
 
-// Connect to MongoDB with proper error handling
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    maxPoolSize: 10,
-    minPoolSize: 2
-}).then(() => {
-    console.log('✓ MongoDB connected successfully');
-}).catch((err) => {
-    console.error('✗ MongoDB connection error:', err.message);
-    process.exit(1);
-});
+// Test Supabase connection on startup
+async function testSupabaseConnection() {
+    const { error } = await supabase.from('users').select('count').limit(1);
+    if (error && error.code !== 'PGRST116') {
+        console.error('✗ Supabase connection error:', error.message);
+        process.exit(1);
+    }
+    console.log('✓ Supabase connected successfully');
+}
+testSupabaseConnection();
 
-// Middleware
-app.use(cors());
+// CORS configuration - Allow Vercel frontend and localhost
+const corsOptions = {
+    origin: [
+        'https://trifort-builders.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:5000',
+        'http://127.0.0.1:5000'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -64,12 +73,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../index.html'));
 });
 
-// 404 handler (must come before error handler)
+// 404 handler
 app.use((req, res) => {
     res.status(404).json({ error: 'Endpoint not found' });
 });
 
-// Global error handling middleware (must be last)
+// Global error handling middleware
 app.use((err, req, res, next) => {
     console.error('✗ Error:', {
         message: err.message,
@@ -78,14 +87,12 @@ app.use((err, req, res, next) => {
         method: req.method
     });
 
-    // Multer errors
     if (err.name === 'MulterError') {
         if (err.code === 'LIMIT_FILE_SIZE') {
             return res.status(400).json({ error: 'File too large. Maximum size is 5MB.' });
         }
     }
 
-    // Default error response
     res.status(err.status || 500).json({ 
         error: process.env.NODE_ENV === 'production' 
             ? 'Server error' 
@@ -100,4 +107,3 @@ app.listen(PORT, () => {
     console.log(`✓ Serving static files from: ${path.join(__dirname, '../../')}`);
     console.log(`✓ Environment: ${process.env.NODE_ENV || 'development'}`);
 });
-

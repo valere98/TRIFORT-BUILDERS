@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-
+const bcryptjs = require('bcryptjs');
+const supabase = require('../config/supabase'); // ← replace User model
 
 router.post('/login', async (req, res) => {
     try {
@@ -12,25 +12,26 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: 'Email and password required' });
         }
         
+        // Find user by email in Supabase
+        const { data: user, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email)
+            .single();
         
-        const user = await User.findOne({ email });
-        
-        if (!user) {
+        if (error || !user) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
-        
-        
-        const bcrypt = require('bcrypt');
-const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+        // Compare password with stored hash
+        const isPasswordValid = await bcryptjs.compare(password, user.password_hash);
         
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
-        
         const token = jwt.sign(
-            { id: user._id, email: user.email, role: user.role },
+            { id: user.id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRY || '7d' }
         );
@@ -40,7 +41,7 @@ const isPasswordValid = await bcrypt.compare(password, user.password_hash);
             message: 'Login successful',
             token,
             user: { 
-                id: user._id,
+                id: user.id,       // ← was user._id (MongoDB), now user.id
                 email: user.email, 
                 name: user.name,
                 role: user.role 
@@ -52,11 +53,9 @@ const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     }
 });
 
-
 router.post('/logout', (req, res) => {
     res.json({ success: true, message: 'Logged out successfully' });
 });
-
 
 router.get('/verify', (req, res) => {
     try {
@@ -65,14 +64,12 @@ router.get('/verify', (req, res) => {
             return res.status(401).json({ error: 'No token provided' });
         }
         
-        
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         res.json({ success: true, message: 'Token valid', user: decoded });
     } catch (error) {
         res.status(401).json({ error: 'Invalid token' });
     }
 });
-
 
 router.get('/me', (req, res) => {
     try {
@@ -89,4 +86,3 @@ router.get('/me', (req, res) => {
 });
 
 module.exports = router;
-

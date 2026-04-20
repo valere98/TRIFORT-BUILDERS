@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Subcontractor = require('../models/Subcontractor');
+const supabase = require('../config/supabase'); // ← replace Subcontractor model
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateSubcontractorForm, sanitizeObject } = require('../utils/validators');
 
@@ -39,20 +39,28 @@ router.post('/submit', async (req, res) => {
             ['company', 'contact', 'trade', 'experience', 'serviceArea', 'message']
         );
 
-        // Create subcontractor record
-        const submission = new Subcontractor({
-            company: sanitized.company,
-            contact: sanitized.contact,
-            email: sanitized.email.toLowerCase(),
-            phone: sanitized.phone || '',
-            trade: sanitized.trade,
-            experience: sanitized.experience || '',
-            serviceArea: sanitized.serviceArea || '',
-            message: sanitized.message || '',
-            status: 'pending'
-        });
+        // Insert subcontractor record into Supabase
+        const { data: submission, error } = await supabase
+            .from('subcontractors')
+            .insert([{
+                company: sanitized.company,
+                contact: sanitized.contact,
+                email: sanitized.email.toLowerCase(),
+                phone: sanitized.phone || '',
+                trade: sanitized.trade,
+                experience: sanitized.experience || '',
+                service_area: sanitized.serviceArea || '', // ← camelCase to snake_case
+                message: sanitized.message || '',
+                status: 'pending'
+            }])
+            .select()
+            .single();
 
-        await submission.save();
+        if (error) {
+            console.error('✗ Supabase insert error:', error.message);
+            return res.status(500).json({ error: 'Failed to submit application.' });
+        }
+
         console.log('✓ Subcontractor application submitted:', submission.email);
         
         res.json({ 
@@ -68,7 +76,16 @@ router.post('/submit', async (req, res) => {
 // GET: Fetch all applications (admin only)
 router.get('/all', authMiddleware, async (req, res) => {
     try {
-        const submissions = await Subcontractor.find().sort({ created_at: -1 });
+        const { data: submissions, error } = await supabase
+            .from('subcontractors')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('✗ Supabase fetch error:', error.message);
+            return res.status(500).json({ error: 'Failed to fetch applications.' });
+        }
+
         res.json(submissions);
     } catch (error) {
         console.error('✗ Error fetching applications:', error.message);
@@ -86,13 +103,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid status value' });
         }
 
-        const submission = await Subcontractor.findByIdAndUpdate(
-            req.params.id, 
-            { status }, 
-            { new: true }
-        );
-        
-        if (!submission) {
+        const { data: submission, error } = await supabase
+            .from('subcontractors')
+            .update({ status })
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !submission) {
             return res.status(404).json({ error: 'Application not found.' });
         }
         
@@ -106,9 +124,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // DELETE: Remove application (admin only)
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const submission = await Subcontractor.findByIdAndDelete(req.params.id);
-        
-        if (!submission) {
+        const { data: submission, error } = await supabase
+            .from('subcontractors')
+            .delete()
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !submission) {
             return res.status(404).json({ error: 'Application not found.' });
         }
         

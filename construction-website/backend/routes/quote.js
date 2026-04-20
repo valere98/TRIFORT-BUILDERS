@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Quote = require('../models/Quote');
+const supabase = require('../config/supabase'); // ← replace Quote model
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateQuoteRequest, sanitizeObject } = require('../utils/validators');
 
@@ -24,17 +24,25 @@ router.post('/request', async (req, res) => {
             ['name', 'projectType', 'details']
         );
 
-        // Create quote request record
-        const quote = new Quote({
-            name: sanitized.name,
-            email: sanitized.email.toLowerCase(),
-            phone: sanitized.phone,
-            projectType: sanitized.projectType,
-            details: sanitized.details || '',
-            status: 'new'
-        });
-        
-        await quote.save();
+        // Insert quote request into Supabase
+        const { data: quote, error } = await supabase
+            .from('quotes')
+            .insert([{
+                name: sanitized.name,
+                email: sanitized.email.toLowerCase(),
+                phone: sanitized.phone,
+                project_type: sanitized.projectType, // ← camelCase to snake_case for SQL
+                details: sanitized.details || '',
+                status: 'new'
+            }])
+            .select()
+            .single();
+
+        if (error) {
+            console.error('✗ Supabase insert error:', error.message);
+            return res.status(500).json({ error: 'Failed to submit quote request' });
+        }
+
         console.log('✓ Quote request received:', quote.email);
         
         res.json({ 
@@ -50,7 +58,16 @@ router.post('/request', async (req, res) => {
 // GET: Fetch all quotes (admin only)
 router.get('/all', authMiddleware, async (req, res) => {
     try {
-        const quotes = await Quote.find().sort({ created_at: -1 });
+        const { data: quotes, error } = await supabase
+            .from('quotes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('✗ Supabase fetch error:', error.message);
+            return res.status(500).json({ error: 'Failed to fetch quotes' });
+        }
+
         res.json(quotes);
     } catch (error) {
         console.error('✗ Error fetching quotes:', error.message);
@@ -68,13 +85,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'Invalid status value' });
         }
 
-        const quote = await Quote.findByIdAndUpdate(
-            req.params.id,
-            { status },
-            { new: true }
-        );
-        
-        if (!quote) {
+        const { data: quote, error } = await supabase
+            .from('quotes')
+            .update({ status })
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !quote) {
             return res.status(404).json({ error: 'Quote not found' });
         }
         
@@ -88,9 +106,14 @@ router.put('/:id', authMiddleware, async (req, res) => {
 // DELETE: Remove quote (admin only)
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const quote = await Quote.findByIdAndDelete(req.params.id);
-        
-        if (!quote) {
+        const { data: quote, error } = await supabase
+            .from('quotes')
+            .delete()
+            .eq('id', req.params.id)
+            .select()
+            .single();
+
+        if (error || !quote) {
             return res.status(404).json({ error: 'Quote not found' });
         }
         
@@ -102,4 +125,3 @@ router.delete('/:id', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
-
