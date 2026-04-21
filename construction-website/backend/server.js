@@ -33,6 +33,7 @@ testSupabaseConnection();
 // CORS configuration - Allow Vercel frontend and localhost
 const corsOptions = {
     origin: [
+        'https://trifort-builders-x8nu.vercel.app',
         'https://trifort-builders.vercel.app',
         'http://localhost:3000',
         'http://localhost:5000',
