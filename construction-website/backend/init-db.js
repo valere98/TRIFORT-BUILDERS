@@ -1,6 +1,8 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+
 const bcryptjs = require('bcryptjs');
 const supabase = require('./config/supabase');
-require('dotenv').config({ path: '../../.env' });
 
 const initializeDatabase = async () => {
     try {
@@ -21,7 +23,8 @@ const initializeDatabase = async () => {
         if (existingUser) {
             console.log('✓ Admin user already exists, skipping creation');
         } else if (checkError && checkError.code !== 'PGRST116') {
-            throw new Error(`Error checking for existing user: ${checkError.message}`);
+            console.error('Full error details:', checkError);
+            throw new Error(`Error checking for existing user: ${checkError.message}\n\nPossible solutions:\n1. Check if RLS is enabled on the 'users' table in Supabase\n2. If RLS is enabled, disable it or add a policy allowing the service role\n3. Verify the SUPABASE_SECRET_KEY is correct`);
         } else {
             // Hash the password before storing
             const passwordHash = await bcryptjs.hash(process.env.ADMIN_PASSWORD, 10);

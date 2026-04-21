@@ -19,14 +19,26 @@ router.post('/login', async (req, res) => {
             .eq('email', email)
             .single();
         
-        if (error || !user) {
+        if (error) {
+            console.error('❌ Database query error:', error);
             return res.status(401).json({ error: 'Invalid email or password' });
         }
+
+        if (!user) {
+            console.error('❌ User not found:', email);
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+        
+        console.log('✓ User found:', email);
+        console.log('✓ Password hash in DB:', user.password_hash.substring(0, 20) + '...');
         
         // Compare password with stored hash
         const isPasswordValid = await bcryptjs.compare(password, user.password_hash);
         
+        console.log('✓ Password comparison result:', isPasswordValid);
+        
         if (!isPasswordValid) {
+            console.error('❌ Invalid password for user:', email);
             return res.status(401).json({ error: 'Invalid email or password' });
         }
         
@@ -36,20 +48,23 @@ router.post('/login', async (req, res) => {
             { expiresIn: process.env.JWT_EXPIRY || '7d' }
         );
         
+        console.log('✓ Login successful for:', email);
+        
         res.json({ 
             success: true, 
             message: 'Login successful',
             token,
             user: { 
-                id: user.id,       // ← was user._id (MongoDB), now user.id
+                id: user.id,
                 email: user.email, 
                 name: user.name,
                 role: user.role 
             }
         });
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).json({ error: 'Server error' });
+        console.error('❌ Login error:', error.message);
+        console.error('Stack:', error.stack);
+        res.status(500).json({ error: 'Server error: ' + error.message });
     }
 });
 
