@@ -656,16 +656,114 @@
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .main { padding: 24px 20px; }
         }
+
+        /* Mobile improvements - Tablet size (700px and below) */
         @media (max-width: 700px) {
-            .body { flex-direction: column; }
-            .sidebar { width: 100%; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; padding: 0; height: auto; }
-            .sidebar-section-label, .sidebar-divider { display: none; }
-            .sidebar-item { flex-direction: column; gap: 4px; padding: 12px 16px; font-size: 0.55rem; border-left: none; border-bottom: 2px solid transparent; }
-            .sidebar-item.active { border-left: none; border-bottom-color: var(--gold); }
-            .sidebar-item .nav-badge { display: none; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .form-grid { grid-template-columns: 1fr; }
-            .header-brand { display: none; }
+            body { overflow-x: hidden; }
+            
+            .body { 
+                flex-direction: column;
+            }
+            
+            .sidebar { 
+                width: 100%; 
+                flex-direction: row; 
+                flex-wrap: nowrap; 
+                overflow-x: auto; 
+                padding: 12px 0;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+            
+            .sidebar-section-label, 
+            .sidebar-divider { 
+                display: none; 
+            }
+            
+            .sidebar-item { 
+                flex-direction: column; 
+                gap: 4px; 
+                padding: 12px 16px; 
+                font-size: 0.55rem; 
+                border-left: none; 
+                border-bottom: 2px solid transparent;
+                white-space: nowrap;
+                transition: all .3s ease;
+            }
+            
+            .sidebar-item:hover { 
+                background: rgba(255,255,255,0.05);
+            }
+            
+            .sidebar-item.active { 
+                border-left: none; 
+                border-bottom-color: var(--gold);
+                background: rgba(200,112,26,0.1);
+            }
+            
+            .sidebar-item .nav-badge { 
+                display: none; 
+            }
+            
+            .main { 
+                padding: 20px 16px;
+                width: 100%;
+            }
+            
+            .stats-grid { 
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid { 
+                grid-template-columns: 1fr;
+            }
+            
+            .header-brand { 
+                display: none; 
+            }
+            
+            .page-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .page-header h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Extra small devices (480px and below) */
+        @media (max-width: 480px) {
+            .sidebar { 
+                padding: 10px 0;
+            }
+            
+            .sidebar-item { 
+                padding: 10px 14px;
+                font-size: 0.5rem;
+            }
+            
+            .main { 
+                padding: 16px 12px;
+            }
+            
+            .stats-grid { 
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 20px 16px;
+            }
+            
+            .form-grid { 
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 1.4rem;
+            }
         }
 
         
@@ -762,7 +860,7 @@
             <a href="#" class="sidebar-item" onclick="switchSection('subcontractors', this)">
                 <div class="nav-icon"><i class="fas fa-hard-hat"></i></div>
                 Subcontractors
-                <span class="nav-badge" id="subcontractorsBadge">—</span>
+                <span class="nav-badge" id="subcontractorsBadge">ï¿½</span>
             </a>
             <a href="#" class="sidebar-item" onclick="switchSection('projects', this)">
                 <div class="nav-icon"><i class="fas fa-hard-hat"></i></div>
@@ -946,7 +1044,7 @@
                 <div class="card">
                     <div class="card-title"><i class="fas fa-hard-hat"></i> All Applications</div>
                     <div id="subcontractorsList" class="submissions-list">
-                        <div class="empty-state"><i class="fas fa-hard-hat"></i>Loading applications…</div>
+                        <div class="empty-state"><i class="fas fa-hard-hat"></i>Loading applicationsï¿½</div>
                     </div>
                 </div>
             </section>
