@@ -838,8 +838,11 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
                 right: 10px;
                 left: auto;
                 width: min(320px, calc(100vw - 20px));
-                max-height: calc(100dvh - 66px);
+                bottom: 10px;
+                max-height: none;
                 overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                overscroll-behavior: contain;
                 padding: 8px 0;
                 background: rgba(20,42,30,.98);
                 backdrop-filter: none;
