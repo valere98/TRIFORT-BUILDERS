@@ -403,6 +403,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
 }
 .share-btn:hover{border-color:var(--G);color:var(--G);}
 
+.mobile-footer{display:none;}
+
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(20px);}
   to{opacity:1;transform:translateY(0);}
@@ -411,8 +413,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
 
         /* Mobile improvements - Tablet size (768px and below) */
         @media(max-width:700px){
-            html, body { overflow-x: hidden; width: 100%; }
-            body { cursor: auto; overflow-x: hidden; }
+            html, body { overflow-x: hidden; width: 100%; height: auto; }
+            body { cursor: auto; overflow-x: hidden; overflow-y: auto; min-height: 100dvh; }
             #CUR, #CURR { display: none !important; }
 
             /* Header & Navigation */
@@ -548,6 +550,101 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
             .big-quote { padding-left: 0; align-self: center; }
             .share-btn { right: 60px; bottom: 24px; }
             .controls { bottom: 20px; }
+
+            .stage {
+                min-height: calc(100dvh - 120px);
+                height: auto;
+            }
+
+            .quote-wrap { max-width: 100%; }
+            .quote-text { font-size: clamp(1rem, 4.6vw, 1.4rem); line-height: 1.5; }
+            .attr-name { font-size: 0.6rem; }
+            .attr-role { font-size: 0.5rem; line-height: 1.4; }
+            .attr-proj { font-size: 0.42rem; letter-spacing: 2px; }
+
+            .filters {
+                top: 64px;
+                width: calc(100% - 16px);
+                max-width: 100%;
+                padding: 8px;
+                gap: 6px;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            .fp {
+                font-size: 0.42rem;
+                letter-spacing: 2px;
+                padding: 6px 10px;
+                flex: 0 0 auto;
+                white-space: nowrap;
+            }
+
+            .share-btn {
+                right: 16px;
+                bottom: 84px;
+                font-size: 0.42rem;
+                letter-spacing: 2px;
+                padding: 9px 12px;
+            }
+            .controls { bottom: 18px; gap: 14px; }
+            .ctrl-btn { width: 38px; height: 38px; }
+            .ctrl-count { font-size: 0.45rem; min-width: 48px; }
+
+            .fbox {
+                width: min(560px, 96vw);
+                max-height: 90dvh;
+                overflow-y: auto;
+            }
+            .fhd { padding: 20px 18px 14px; }
+            .fbdy { padding: 14px 18px 18px; gap: 12px; }
+            .fg input, .fg textarea { font-size: 16px; }
+            .fsubmit {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 14px;
+            }
+
+            .mobile-footer {
+                display: block;
+                background: var(--ED);
+                border-top: 1px solid rgba(255,255,255,.07);
+                margin-top: 8px;
+            }
+            .mobile-footer-inner {
+                padding: 28px 16px 18px;
+                display: grid;
+                gap: 20px;
+            }
+            .mobile-footer h4 {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1rem;
+                color: var(--G);
+                font-weight: 400;
+                margin-bottom: 10px;
+            }
+            .mobile-footer p,
+            .mobile-footer li,
+            .mobile-footer a {
+                color: rgba(255,255,255,.45);
+                text-decoration: none;
+                font-size: .58rem;
+                line-height: 1.8;
+                letter-spacing: .5px;
+            }
+            .mobile-footer ul { list-style: none; }
+            .mobile-footer-bottom {
+                border-top: 1px solid rgba(255,255,255,.06);
+                padding: 12px 16px;
+                text-align: center;
+                font-size: .42rem;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: rgba(255,255,255,.24);
+            }
         }
 
         /* Extra small devices (480px and below) */
@@ -578,9 +675,19 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
             /* Layout */
             .hdr { padding: 0 14px; }
             .stage { padding: 80px 14px 60px; }
-            .filters { gap: 4px; padding: 8px 10px; }
-            .share-btn { right: 50px; bottom: 20px; }
+            .filters {
+                top: 60px;
+                width: calc(100% - 12px);
+                padding: 6px;
+                gap: 4px;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+            }
+            .share-btn { right: 12px; bottom: 76px; }
             .controls { bottom: 16px; }
+            .quote-text { font-size: clamp(0.92rem, 4.8vw, 1.2rem); }
+            .fhd { padding: 16px 14px 12px; }
+            .fbdy { padding: 12px 14px 14px; gap: 10px; }
         }
 
         @media (max-width: 900px) and (orientation: landscape) {
@@ -600,8 +707,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
             }
 
             .stage {
-                padding-top: 92px;
-                padding-bottom: 64px;
+                padding-top: 118px;
+                padding-bottom: 72px;
+                min-height: calc(100dvh - 96px);
             }
 
             .big-quote {
@@ -611,6 +719,26 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
             .quote-text {
                 font-size: clamp(1.1rem, 2.8vw, 1.7rem);
             }
+
+            .filters {
+                top: 56px;
+                width: calc(100% - 12px);
+                padding: 6px;
+                gap: 4px;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+            .fp { padding: 5px 9px; letter-spacing: 1.2px; }
+
+            .fbox {
+                width: min(640px, 96vw);
+                max-height: 88dvh;
+            }
+            .fg textarea { min-height: 88px; }
+            .fsubmit { width: 100%; justify-content: center; }
         }
 </style>
 </head>
@@ -742,6 +870,24 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
 </div>
 
 <div class="toast" id="TOAST"></div>
+
+<footer class="mobile-footer">
+  <div class="mobile-footer-inner">
+    <div>
+      <h4>TRI-FORT CONSTRUCTION</h4>
+      <p>Transparency through builds. We deliver commercial, residential and industrial projects with precision and integrity.</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li>+254 701 051 440</li>
+        <li>+254 705 305 030</li>
+        <li><a href="mailto:info@trifort.co.ke">info@trifort.co.ke</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mobile-footer-bottom">© 2026 TRI-FORT CONSTRUCTION LTD. All rights reserved.</div>
+</footer>
 
 <script>
 const ALL_REVIEWS = [
