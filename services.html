@@ -22,12 +22,14 @@
             --bg: #fcfaf7;
             --animate-duration: 1s;
         }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg);
             color: var(--charcoal);
             overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
             cursor: none;
         }
 
@@ -773,6 +775,7 @@
         
         /* Mobile improvements - Tablet size (768px and below) */
         @media (max-width: 768px) {
+            html, body { overflow-x: hidden; width: 100%; }
             body { cursor: auto; overflow-x: hidden; }
             #cursor, #cursorRing { display: none !important; }
             
@@ -895,6 +898,12 @@
                 font-weight: 600;
             }
 
+            
+            .header, .header-container, .nav-menu, .hero, .page-hero, .section, .section-inner, .body, .strip, .timeline-container, .form-container, .footer, .footer-container, .footer-grid {
+                max-width: 100vw;
+                overflow-x: clip;
+            }
+
             /* Sections */
             .hero { min-height: 80vh; padding: 60px 20px 40px; }
             .hero-content { padding: 0; }
@@ -971,6 +980,53 @@
             .footer-container { padding: 50px 14px 30px; }
             .footer-bottom { padding: 14px 12px; }
         }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            html, body {
+                overflow-x: hidden;
+            }
+
+            .header-container {
+                min-height: 56px;
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+
+            .nav-menu {
+                top: 56px;
+                max-height: calc(100vh - 56px);
+            }
+
+            .hero,
+            .page-hero {
+                min-height: 420px !important;
+                height: auto !important;
+            }
+
+            .hero-content,
+            .page-hero-content {
+                padding-left: 16px !important;
+                padding-right: 16px !important;
+            }
+
+            .hero-title strong,
+            .page-hero h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
+
+            .section,
+            .application-section,
+            .services-section,
+            .process-section,
+            .why-section,
+            .materials-section,
+            .cta-section,
+            .cta-band {
+                padding-top: 44px !important;
+                padding-bottom: 44px !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -992,12 +1048,6 @@
                 <span class="logo-tagline">Transparency through builds</span>
             </div>
         </a>
-<button class="menu-toggle" id="menuToggle">  
-    <span></span>
-  <span></span>
-  <span></span>
-</button>
-
         <nav class="nav-menu" id="navMenu">
             <a href="index.html" class="nav-item">Home</a>
             <a href="about.html" class="nav-item">About</a>
@@ -1029,7 +1079,7 @@
     <div class="hero-grain"></div>
 
     <div class="hero-content">
-        <p class="hero-eyebrow animate__animated animate__fadeInDown animate__delay-1s">.</p>
+        <p class="hero-eyebrow animate__animated animate__fadeInDown animate__delay-1s">Est. 2020 &middot; Nairobi, Kenya</p>
         <div class="hero-title">
             <em class="animate__animated animate__fadeInUp" style="animation-delay:0.6s;animation-fill-mode:both;">Excellence In</em>
             <strong class="animate__animated animate__fadeInUp" style="animation-delay:0.9s;animation-fill-mode:both;">Every Build</strong>
@@ -1593,34 +1643,18 @@ const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 let lastY = 0;
 
-const menuToggle = document.getElementById('menuToggle');
-
-function toggleNav() {
-    const isOpen = hdr.classList.toggle('nav-open');
-    if (navToggle) navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    if (menuToggle) menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-}
-
 if (navToggle && hdr && navMenu) {
-    navToggle.addEventListener('click', toggleNav);
-    };
+    navToggle.addEventListener('click', () => {
+        const isOpen = hdr.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
     navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             if (hdr.classList.contains('nav-open')) {
                 hdr.classList.remove('nav-open');
                 navToggle.setAttribute('aria-expanded', 'false');
             }
-        });
-    });
-
-
-
-if (menuToggle && hdr && navMenu) {
-    menuToggle.addEventListener('click', toggleNav);
-    navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            hdr.classList.remove('nav-open');
-            if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
         });
     });
 }
@@ -1781,18 +1815,6 @@ setTimeout(() => {
         btn.style.animationDuration = '2s';
     });
 }, 2000);
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const toggle = document.querySelector(".nav-toggle");
-  const header = document.querySelector(".header");
-
-  toggle.addEventListener("click", function () {
-      header.classList.toggle("nav-open");
-  });
-
-});
 </script>
 </body>
 </html>

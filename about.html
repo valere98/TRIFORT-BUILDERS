@@ -19,12 +19,14 @@
             --charcoal: #2a3a30;
             --bg: #fcfaf7;
         }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--bg);
             color: var(--charcoal);
             overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
             cursor: none;
         }
 
@@ -663,6 +665,7 @@
         
         /* Mobile improvements - Tablet size (768px and below) */
         @media (max-width: 768px) {
+            html, body { overflow-x: hidden; width: 100%; }
             body { cursor: auto; overflow-x: hidden; }
             #cursor,
             #cursorRing { display: none !important; }
@@ -795,6 +798,12 @@
                 color: white !important;
             }
 
+            
+            .header, .header-container, .nav-menu, .hero, .page-hero, .section, .section-inner, .body, .strip, .timeline-container, .form-container, .footer, .footer-container, .footer-grid {
+                max-width: 100vw;
+                overflow-x: clip;
+            }
+
             /* Page sections */
             .section-inner { padding: 0 16px; }
             .page-hero-content { padding: 0 16px; }
@@ -846,6 +855,53 @@
             .timeline-content { width: 100%; text-align: left !important; }
             .timeline-dot-wrap { position: relative; left: auto; transform: none; margin: 16px 0; }
         }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            html, body {
+                overflow-x: hidden;
+            }
+
+            .header-container {
+                min-height: 56px;
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+
+            .nav-menu {
+                top: 56px;
+                max-height: calc(100vh - 56px);
+            }
+
+            .hero,
+            .page-hero {
+                min-height: 420px !important;
+                height: auto !important;
+            }
+
+            .hero-content,
+            .page-hero-content {
+                padding-left: 16px !important;
+                padding-right: 16px !important;
+            }
+
+            .hero-title strong,
+            .page-hero h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
+
+            .section,
+            .application-section,
+            .services-section,
+            .process-section,
+            .why-section,
+            .materials-section,
+            .cta-section,
+            .cta-band {
+                padding-top: 44px !important;
+                padding-bottom: 44px !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -1307,14 +1363,6 @@
     countEls.forEach(el => countObs.observe(el));
 
 
-</script>
-<script>
-const toggle = document.querySelector(".nav-toggle");
-const header = document.querySelector("#header");
-
-toggle.addEventListener("click", () => {
-    header.classList.toggle("nav-open");
-});
 </script>
 
 </body>

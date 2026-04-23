@@ -376,6 +376,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 
         /* Mobile improvements - Tablet size (768px and below) */
         @media (max-width: 768px) {
+            html, body { overflow-x: hidden; width: 100%; }
             body { cursor: auto; overflow-x: hidden; }
             #CUR,
             #CURR { display: none !important; }
@@ -501,6 +502,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
                 font-weight: 600;
             }
 
+            
+            .header, .header-container, .nav-menu, .hero, .page-hero, .section, .section-inner, .body, .strip, .timeline-container, .form-container, .footer, .footer-container, .footer-grid {
+                max-width: 100vw;
+                overflow-x: clip;
+            }
+
             /* Layout adjustments */
             .body { grid-template-columns: 1fr; gap: 40px; padding: 60px 16px; }
             .hero-inner { padding: 0 16px 60px; }
@@ -543,6 +550,40 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
             .footer { padding: 50px 14px 0; }
             .footer-inner { grid-template-columns: 1fr; gap: 24px; }
             .hdr { padding: 0 14px; }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) {
+            html, body {
+                overflow-x: hidden;
+            }
+
+            .header-container {
+                min-height: 56px;
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+
+            .nav-menu {
+                top: 56px;
+                max-height: calc(100vh - 56px);
+            }
+
+            .hero {
+                min-height: 420px;
+                height: auto;
+            }
+
+            .hero-inner,
+            .body,
+            .offices,
+            .footer {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .hero-ttl {
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
         }
 </style>
 </head>
