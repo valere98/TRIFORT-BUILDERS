@@ -118,6 +118,21 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
     transform: rotate(-45deg);
 }
 
+.nav-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(4,10,7,.42);
+  backdrop-filter:blur(2px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:1098;
+}
+.header.nav-open + .nav-backdrop{
+  opacity:1;
+  pointer-events:auto;
+}
+
 
 .scene{position:fixed;inset:0;z-index:0;}
 .scene-img{
@@ -416,6 +431,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
             html, body { overflow-x: hidden; width: 100%; height: auto; }
             body { cursor: auto; overflow-x: hidden; overflow-y: auto; min-height: 100dvh; }
             #CUR, #CURR { display: none !important; }
+            body.nav-lock{overflow:hidden;}
 
             /* Header & Navigation */
             .header-container {
@@ -770,6 +786,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--ED);color:var(--W);cur
         </nav>
     </div>
 </header>
+<div class="nav-backdrop" id="navBackdrop"></div>
 
 
 <div class="filters">
@@ -920,20 +937,58 @@ document.querySelectorAll('a,button,.thumb,.fp').forEach(el=>{
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const header = document.getElementById('header');
+const navBackdrop = document.getElementById('navBackdrop');
 
 if (navToggle && header && navMenu) {
+    const closeNav = () => {
+        header.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-lock');
+    };
+
+    const openNav = () => {
+        header.classList.add('nav-open');
+        navToggle.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('nav-lock');
+    };
+
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-controls', 'navMenu');
+
     navToggle.addEventListener('click', () => {
-        const isOpen = header.classList.toggle('nav-open');
-        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (header.classList.contains('nav-open')) {
+            closeNav();
+        } else {
+            openNav();
+        }
     });
     
     navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             if (header.classList.contains('nav-open')) {
-                header.classList.remove('nav-open');
-                navToggle.setAttribute('aria-expanded', 'false');
+                closeNav();
             }
         });
+    });
+
+    if (navBackdrop) {
+      navBackdrop.addEventListener('click', closeNav);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('nav-open')) {
+        closeNav();
+      }
+    });
+
+    const resetNavOnViewportChange = () => {
+      if (window.innerWidth > 700 && header.classList.contains('nav-open')) {
+        closeNav();
+      }
+    };
+    window.addEventListener('resize', resetNavOnViewportChange);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(resetNavOnViewportChange, 120);
     });
 }
 
