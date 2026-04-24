@@ -943,9 +943,12 @@ function handleForm(formId,btnId,msgId,url,extra){
     setTimeout(()=>{msg.style.display='none';},6000);
   });
 }
-handleForm('CFORM','CBTN','CMSG','https://your-backend-url.onrender.com/api/contact/submit');
-handleForm('QFORMSUBMIT','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
-// handleForm('QFORM','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
+handleForm('CFORM','CBTN','CMSG','https://trifort-builders.onrender.com/api/contact/submit',()=>{
+  const f=document.querySelector('#CFORM [name="fname"]').value.trim();
+  const l=document.querySelector('#CFORM [name="lname"]').value.trim();
+  return {name:[f,l].filter(Boolean).join(' ')};
+});
+handleForm('QFORMSUBMIT','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/request',()=>({projectType:document.getElementById('SVC').value}));
 </script>
 </body>
 </html>
