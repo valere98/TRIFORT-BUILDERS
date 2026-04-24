@@ -1118,6 +1118,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         loadContacts();
         loadQuotes();
         loadProjects();
+        loadSubcontractors();
     });
 
     
@@ -1127,9 +1128,10 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         document.getElementById(sectionId).classList.add('active');
         if (clickedEl) clickedEl.classList.add('active');
 
-        if (sectionId === 'contacts') loadContacts();
-        if (sectionId === 'quotes')   loadQuotes();
-        if (sectionId === 'projects') loadProjects();
+        if (sectionId === 'contacts')       loadContacts();
+        if (sectionId === 'quotes')         loadQuotes();
+        if (sectionId === 'projects')       loadProjects();
+        if (sectionId === 'subcontractors') loadSubcontractors();
         return false;
     }
 
@@ -1171,10 +1173,11 @@ const API_BASE_URL = window.location.hostname === 'localhost'
             const token = localStorage.getItem('adminToken');
             const headers = { 'Authorization': `Bearer ${token}` };
 
-            const [cRes, qRes, pRes] = await Promise.all([
-                fetch('https://trifort-builders.onrender.com/api/contact/all', { headers }),
-                fetch('https://trifort-builders.onrender.com/api/quote/all',   { headers }),
-                fetch('https://trifort-builders.onrender.com/api/projects',    { headers }),
+            const [cRes, qRes, pRes, sRes] = await Promise.all([
+                fetch('https://trifort-builders.onrender.com/api/contact/all',       { headers }),
+                fetch('https://trifort-builders.onrender.com/api/quote/all',         { headers }),
+                fetch('https://trifort-builders.onrender.com/api/projects',          { headers }),
+                fetch('https://trifort-builders.onrender.com/api/subcontractor/all', { headers }),
             ]);
 
             if (cRes.ok) {
@@ -1190,6 +1193,11 @@ const API_BASE_URL = window.location.hostname === 'localhost'
             if (pRes.ok) {
                 const projects = await pRes.json();
                 animateCount(document.getElementById('totalProjects'), projects.length);
+            }
+            if (sRes.ok) {
+                const subs = await sRes.json();
+                const badge = document.getElementById('subcontractorsBadge');
+                if (badge) badge.textContent = subs.length;
             }
         } catch (e) { console.error('Dashboard data error:', e); }
     }
@@ -1244,7 +1252,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
                             <h3>${q.name || 'Unknown'}</h3>
                             <p><strong>Email:</strong> ${q.email || 'N/A'}</p>
                             <p><strong>Phone:</strong> ${q.phone || 'N/A'}</p>
-                            <p><strong>Project Type:</strong> ${q.projectType || 'N/A'}</p>
+                            <p><strong>Project Type:</strong> ${q.project_type || 'N/A'}</p>
                             <p><strong>Details:</strong> ${q.details || 'N/A'}</p>
                             <p><strong>Status:</strong> <span class="status-badge ${q.status === 'new' ? 'new' : ''}">${q.status || 'new'}</span></p>
                             <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>${new Date(q.created_at).toLocaleString()}</div>
@@ -1279,7 +1287,7 @@ const API_BASE_URL = window.location.hostname === 'localhost'
                             <p><strong>Location:</strong> ${p.location || 'N/A'}</p>
                             <p><strong>Description:</strong> ${p.description || 'N/A'}</p>
                             <p><strong>Completion Date:</strong> ${p.completion_date ? new Date(p.completion_date).toLocaleDateString() : 'N/A'}</p>
-                            ${p.image ? `<p><strong>Image:</strong> <a href="https://trifort-builders.onrender.com/uploads/${p.image}" target="_blank" style="color:var(--gold-light);text-decoration:none;">View Image →</a></p>` : ''}
+                            ${p.image ? `<p><strong>Image:</strong> <a href="https://trifort-builders.onrender.com${p.image}" target="_blank" style="color:var(--gold-light);text-decoration:none;">View Image →</a></p>` : ''}
                             <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>Added: ${new Date(p.created_at).toLocaleString()}</div>
                         </div>`).join('');
                 }
@@ -1291,7 +1299,42 @@ const API_BASE_URL = window.location.hostname === 'localhost'
         }
     }
 
-    
+
+    async function loadSubcontractors() {
+        const token = localStorage.getItem('adminToken');
+        const list  = document.getElementById('subcontractorsList');
+        try {
+            const res = await fetch('https://trifort-builders.onrender.com/api/subcontractor/all', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const subs = await res.json();
+                if (!subs.length) {
+                    list.innerHTML = `<div class="empty-state"><i class="fas fa-hard-hat"></i>No applications yet.</div>`;
+                } else {
+                    list.innerHTML = subs.map(s => `
+                        <div class="submission-item">
+                            <h3>${s.company || 'Unknown Company'}</h3>
+                            <p><strong>Contact:</strong> ${s.contact || 'N/A'}</p>
+                            <p><strong>Email:</strong> ${s.email || 'N/A'}</p>
+                            <p><strong>Phone:</strong> ${s.phone || 'N/A'}</p>
+                            <p><strong>Trade:</strong> ${s.trade || 'N/A'}</p>
+                            <p><strong>Experience:</strong> ${s.experience ? s.experience + ' years' : 'N/A'}</p>
+                            <p><strong>Service Area:</strong> ${s.service_area || 'N/A'}</p>
+                            ${s.message ? `<p><strong>Message:</strong> ${s.message}</p>` : ''}
+                            <p><strong>Status:</strong> <span class="status-badge ${s.status === 'pending' ? 'new' : ''}">${s.status || 'pending'}</span></p>
+                            <div class="timestamp"><i class="fas fa-clock" style="margin-right:5px;opacity:.4;"></i>${new Date(s.created_at).toLocaleString()}</div>
+                        </div>`).join('');
+                }
+            } else {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i>Unable to load applications.</div>`;
+            }
+        } catch (e) {
+            list.innerHTML = `<div class="empty-state"><i class="fas fa-wifi"></i>Connection error loading applications.</div>`;
+        }
+    }
+
+
     async function submitProject(event) {
         event.preventDefault();
         const formData = new FormData();

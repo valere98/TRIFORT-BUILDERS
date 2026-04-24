@@ -1286,28 +1286,33 @@
         revealEls.forEach(el => observer.observe(el));
 
         
-        document.getElementById('subcontractorForm').addEventListener('submit', function(e) {
+        document.getElementById('subcontractorForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             const btn = this.querySelector('.submit-btn');
+            const orig = btn.textContent;
             btn.disabled = true; btn.textContent = 'Submitting...';
-            fetch('https://trifort-builders.onrender.com/api/subcontractor/submit', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            })
-            .then(r => r.json())
-            .then(() => {
-                btn.textContent = 'Application Submitted!';
-                btn.style.background = '#2a5a3e';
-                document.getElementById('subcontractorForm').reset();
-            })
-            .catch(() => {
-                btn.disabled = false;
-                btn.textContent = 'Submit Application';
-                alert('Network error. Please try again.');
-            });
+            try {
+                const r = await fetch('https://trifort-builders.onrender.com/api/subcontractor/submit', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const result = await r.json();
+                if (r.ok) {
+                    btn.textContent = 'Application Submitted!';
+                    btn.style.background = '#2a5a3e';
+                    document.getElementById('subcontractorForm').reset();
+                    setTimeout(() => { btn.disabled = false; btn.textContent = orig; btn.style.background = ''; }, 5000);
+                } else {
+                    btn.disabled = false; btn.textContent = orig;
+                    alert(result.error || (result.errors ? result.errors.join(', ') : 'Submission failed. Please try again.'));
+                }
+            } catch {
+                btn.disabled = false; btn.textContent = orig;
+                alert('Network error. Please check your connection and try again.');
+            }
         });
     </script>
 </body>
