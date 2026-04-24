@@ -206,7 +206,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 }
 .hero-ttl em{font-style:italic;color:var(--GL);}
 .hero-sub{
-  font-size:.58rem;font-weight:300;letter-spacing:1.5px;color:black
+  font-size:.58rem;font-weight:300;letter-spacing:1.5px;color:rgba(255,255,255,0.7);
   margin-top:20px;max-width:520px;line-height:2;
   opacity:0;animation:fadeUp .9s .5s forwards;
 }
@@ -236,7 +236,8 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 .s-val a:hover{color:var(--GL);}
 
 
-.body{max-width:1400px;margin:0 auto;padding:100px 72px;display:grid;grid-template-columns:1fr 1fr;gap:90px;}
+.body{max-width:1400px;margin:0 auto;padding:100px 72px;display:flex;flex-direction:column;align-items:center;gap:90px;}
+.body > div { width: 100%; max-width: 800px; }
 
 
 .sec-eye{font-size:.44rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--G);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
@@ -292,6 +293,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
   background:var(--E);
   padding:90px 72px;
   position:relative;overflow:hidden;
+  width: 100%;
 }
 
 .offices-wm{
@@ -302,15 +304,23 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
   filter:brightness(10) saturate(0);
   mix-blend-mode:screen;
 }
-.off-head{max-width:1400px;margin:0 auto 56px;position:relative;z-index:1;}
-.off-eye{font-size:.44rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--GL);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+.off-head{max-width:100%;margin:0 auto 56px;position:relative;z-index:1;}
+.off-eye{font-size:.75rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--GL);margin-bottom:12px;display:flex;align-items:center;gap:12px;}
 .off-eye::before{content:'';width:28px;height:1px;background:var(--G);}
 .off-ttl{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3vw,2.8rem);font-weight:300;color:var(--W);letter-spacing:-.5px;}
-.off-grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;z-index:1;}
+.off-grid{max-width:100%;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;z-index:1;}
 .off-card{
-  padding:46px 42px;background:rgba(255,255,255,.03);
-  border:1px solid rgba(227, 243, 228, 0.858);
-  transition:background .3s;position:relative;overflow:hidden;
+  padding:30px 25px;
+  background: rgba(13, 34, 23, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(200, 112, 26, 0.2);
+  transition: all .4s ease;
+  position:relative;
+  overflow:hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
 }
 .off-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
@@ -319,31 +329,60 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 }
 .off-card:hover{background:rgba(255,255,255,.06);}
 .off-card:hover::after{transform:scaleX(1);}
-.off-city{font-size:.42rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--GL);margin-bottom:10px;}
+.off-city{font-size:.7rem;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--GL);margin-bottom:10px;}
 .off-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--W);margin-bottom:18px;letter-spacing:-.3px;}
-.off-detail{font-size:.58rem;font-weight:300;color:black;line-height:2.2;}
-.off-detail strong{display:block;color:rgba(255,255,255,.55);font-weight:400;margin-bottom:2px;}
+.off-detail{font-family:'Cormorant Garamond', serif;font-size:1.1rem;font-weight:300;color: rgba(255,255,255,0.8);line-height:1.6;}
+.off-detail strong{display:block;color: var(--GL);font-weight:500;margin-bottom:4px;}
 
 
-.footer{background:var(--ED);padding:72px 72px 0;position:relative;overflow:hidden;}
-.footer-wm{
-  position:absolute;bottom:-5%;left:-3%;
-  width:42%;opacity:.03;
-  filter:brightness(10) saturate(0);
-  mix-blend-mode:screen;
-  pointer-events:none;
-}
-.footer-inner{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:50px;padding-bottom:52px;position:relative;z-index:1;}
-.f-logo-img{height:36px;margin-bottom:18px;opacity:.7;filter:brightness(0) invert(1);}
-.f-logo-tag{font-size:.42rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:16px;}
-.f-logo-desc{font-size:.6rem;color:rgba(255,255,255,.38);line-height:1.95;}
-.f-col h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--G);margin-bottom:18px;font-weight:400;}
-.f-col ul{list-style:none;}
-.f-col ul li{margin-bottom:10px;}
-.f-col ul li a{color:rgba(255,255,255,.35);text-decoration:none;font-size:.58rem;letter-spacing:.5px;transition:color .2s;cursor:none;}
-.f-col ul li a:hover{color:var(--GL);}
-.f-col ul li span{color:rgba(255,255,255,.35);font-size:.58rem;letter-spacing:.5px;}
-.footer-bot{max-width:1400px;margin:0 auto;padding:20px 0;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;font-size:.45rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);position:relative;z-index:1;}
+footer {
+            background: var(--ED);
+            color: rgba(255,255,255,0.7);
+            padding: 60px 60px 30px;
+        }
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+        .footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+        .footer-col h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .footer-col a,
+        .footer-col p {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+        .footer-col a:hover {
+            color: var(--GL);
+        }
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+        }
 
 
 #BTT{
@@ -365,12 +404,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 
 
         @media(max-width:1100px){
-            .body{grid-template-columns:1fr;gap:60px;padding:72px 40px;}
+            .body{padding:72px 40px;}
             .hero-inner{padding:0 40px 72px;}
             .offices{padding:60px 40px;}
-            .footer{padding:60px 40px 0;}
-            .footer-inner{grid-template-columns:1fr 1fr;gap:36px;}
-            .off-grid{grid-template-columns:1fr;}
+            footer{padding:60px 40px 30px;}
+            .footer-grid{grid-template-columns:1fr 1fr;gap:36px;padding:0;}
+            .off-grid{grid-template-columns:1fr 1fr;}
             .hdr{padding:0 24px;}
         }
 
@@ -503,17 +542,24 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
             }
 
             
-            .header, .header-container, .nav-menu, .hero, .page-hero, .section, .section-inner, .body, .strip, .timeline-container, .form-container, .footer, .footer-container, .footer-grid {
+            .header, .header-container, .nav-menu, .hero, .page-hero, .section, .section-inner, .body, .strip, .timeline-container, .form-container, footer, .footer-grid {
                 max-width: 100vw;
                 overflow-x: clip;
             }
 
             /* Layout adjustments */
-            .body { grid-template-columns: 1fr; gap: 40px; padding: 60px 16px; }
+            .body { gap: 40px; padding: 60px 16px; }
             .hero-inner { padding: 0 16px 60px; }
             .offices { padding: 60px 16px; }
-            .footer { padding: 60px 16px 0; }
-            .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+            .strip { flex-direction: column; }
+            .strip-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); padding: 40px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+            .strip-item:last-child { border-bottom: none; }
+            .s-icon { width: 50px; height: 50px; }
+            .s-label { font-size: 0.45rem; }
+            .s-val { font-size: 0.95rem; }
+            footer { padding: 60px 16px 30px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; padding: 0; }
+            .footer-bottom { padding: 30px 0 0; flex-direction: column; gap: 12px; text-align: center; }
             .off-grid { grid-template-columns: 1fr; }
             .hdr { padding: 0 16px; }
         }
@@ -547,8 +593,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
             .body { padding: 50px 14px; gap: 32px; }
             .hero-inner { padding: 0 14px 50px; }
             .offices { padding: 50px 14px; }
-            .footer { padding: 50px 14px 0; }
-            .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+            footer { padding: 50px 14px 30px; }
             .hdr { padding: 0 14px; }
         }
 
@@ -643,7 +688,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
     <div class="s-icon"><i class="fa-regular fa-location-dot"></i></div>
     <div>
       <div class="s-label">Headquarters</div>
-      <div class="s-val">Westlands, Nairobi<br>Kenya</div>
+      <div class="s-val"> Nairobi<br>Kenya</div>
     </div>
   </div>
   <div class="strip-item">
@@ -674,6 +719,9 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 
   
   <div>
+    <div id="MFORM">
+   <!-- first line of the form -->
+
     <div class="rl">
       <div class="sec-eye">Send a Message</div>
       <h2 class="sec-ttl">We'd Love to<br><em>Hear From You</em></h2>
@@ -694,9 +742,12 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
       <div class="form-msg" id="CMSG"></div>
     </form>
   </div>
+  </div>/
 
   
   <div>
+    <div id="QFORM">
+   <!-- first line of the form -->
     <div class="rr">
       <div class="sec-eye">Request a Quote</div>
       <h2 class="sec-ttl">Start Your<br><em>Project Brief</em></h2>
@@ -711,7 +762,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
       <span class="pill" data-v="other">Other</span>
     </div>
     <input type="hidden" id="SVC" value="residential">
-    <form id="QFORM" novalidate>
+    <form id="QFORMSUBMIT" novalidate>   <!-- Changed from id="QFORM" -->
       <div class="fg-row rr d2">
         <div class="fg"><label>Full Name *</label><input type="text" name="name" placeholder="Your name" required></div>
         <div class="fg"><label>Company</label><input type="text" name="company" placeholder="Company name"></div>
@@ -728,7 +779,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
   </div>
 </div>
 
-
+</div>
 
 <section class="offices">
  <div class="off-head">
@@ -770,48 +821,44 @@ body{font-family:'Montserrat',sans-serif;background:var(--BG);color:var(--CH);cu
 </section>
 
 
-<footer class="footer">
-  <div class="footer-inner">
-    <div>
-     <div class="f-logo-tag">Construction · Est. 2020</div>
-      <p class="f-logo-desc">Transparency through builds. We deliver commercial, residential and industrial projects across East Africa with precision, integrity and craftsmanship.</p>
-    </div>
-    <div class="f-col">
-      <h4>Contact</h4>
-      <ul>
-        <li><span> +254 701 051 440</span></li>
-         <li><span>+254 705 305 030 </span></li>
-
-        <li><a href="mailto:info@trifort.co.ke">info@trifort.co.ke</a></li>
-        <li><span>Westlands, Nairobi</span></li>
-      </ul>
-    </div>
-    <div class="f-col">
-      <h4>Navigate</h4>
-      <ul>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="reviews.html">Reviews</a></li>
-        <li><a href="subcontractor.html">Subcontractors</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </div>
-    <div class="f-col">
-      <h4>Services</h4>
-      <ul>
-        <li><a href="#">Residential</a></li>
-        <li><a href="#">Commercial</a></li>
-        <li><a href="#">Industrial</a></li>
-        <li><a href="#">Renovation</a></li>
-        <li><a href="#">Mixed Use</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bot">
-    <span>© 2026 TRI-FORT CONSTRUCTION LTD. All rights reserved.</span>
-    <span>Transparency through builds.</span>
-  </div>
-</footer>
+<footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+                    <span class="logo-name" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;letter-spacing:3px;color:white;">TRI-FORT</span>
+                </div>
+                <div style="font-size:0.55rem;letter-spacing:2px;color:var(--GL);text-transform:uppercase;font-weight:500;margin-bottom:16px;">Transparency Through Builds.</div>
+                <p>Building Kenya's future through precision, integrity, and sustainable construction practices.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigate</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="projects.html">Projects</a>
+                <a href="reviews.html">Reviews</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <p>Residential Builds</p>
+                <p>Commercial Projects</p>
+                <p>Industrial Construction</p>
+                <p>Restoration & Renovation</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>Westlands, Nairobi, Kenya</p>
+                <p>+254 705 305 030</p>
+                <p>+254 701 051 440</p>
+                <p>info@trifort.co.ke</p>
+                <p>Mon–Fri 8:00am–5:00pm</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2025 TRI-FORT CONSTRUCTION. All rights reserved.</span>
+            <span>Nairobi, Kenya</span>
+        </div>
+    </footer>
 
 <button id="BTT" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fa-regular fa-arrow-up"></i></button>
 
@@ -897,7 +944,8 @@ function handleForm(formId,btnId,msgId,url,extra){
   });
 }
 handleForm('CFORM','CBTN','CMSG','https://your-backend-url.onrender.com/api/contact/submit');
-handleForm('QFORM','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
+handleForm('QFORMSUBMIT','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
+// handleForm('QFORM','QBTN','QMSG','https://trifort-builders.onrender.com/api/quote/submit',()=>({service:document.getElementById('SVC').value}));
 </script>
 </body>
 </html>
