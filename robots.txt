@@ -1,0 +1,32 @@
+# TRI-FORT CONSTRUCTION - Robots.txt
+# Control search engine crawling and indexing
+
+# Default rules for all bots
+User-agent: *
+Allow: /
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /construction-website/
+Disallow: /*.json
+Disallow: /*.xml
+Disallow: /backend/
+
+# Specific rules for Googlebot
+User-agent: Googlebot
+Allow: /
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /construction-website/
+
+# Specific rules for Bingbot
+User-agent: Bingbot
+Allow: /
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /construction-website/
+
+# Crawl delay (in seconds) - be respectful
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://trifort-builders-x8nu.vercel.app/sitemap.xml
