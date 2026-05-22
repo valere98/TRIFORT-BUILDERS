@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const supabase = require('../config/supabase'); // ← replace Quote model
+const supabase = require('../config/supabase');
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateQuoteRequest, sanitizeObject } = require('../utils/validators');
+const { sendQuoteConfirmation, sendQuoteNotificationToAdmin } = require('../services/emailService');
 
 // POST: Submit quote request (public endpoint)
 router.post('/request', async (req, res) => {
@@ -31,7 +32,7 @@ router.post('/request', async (req, res) => {
                 name: sanitized.name,
                 email: sanitized.email.toLowerCase(),
                 phone: sanitized.phone,
-                project_type: sanitized.projectType, // ← camelCase to snake_case for SQL
+                project_type: sanitized.projectType,
                 details: sanitized.details || '',
                 status: 'new'
             }])
@@ -44,6 +45,14 @@ router.post('/request', async (req, res) => {
         }
 
         console.log('✓ Quote request received:', quote.email);
+        
+        // Send confirmation email to user (non-blocking)
+        sendQuoteConfirmation(sanitized.name, sanitized.email, sanitized.projectType)
+            .catch(err => console.error('✗ Failed to send confirmation email:', err.message));
+        
+        // Send notification email to admin (non-blocking)
+        sendQuoteNotificationToAdmin(sanitized.name, sanitized.email, sanitized.phone, sanitized.projectType, sanitized.details)
+            .catch(err => console.error('✗ Failed to send admin notification:', err.message));
         
         res.json({ 
             success: true, 

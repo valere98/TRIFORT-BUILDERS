@@ -2,15 +2,22 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const supabase = require('./config/supabase'); // ← Supabase client
+const supabase = require('./config/supabase');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
 const contactRoutes = require('./routes/contact');
 const quoteRoutes = require('./routes/quote');
+const reviewRoutes = require('./routes/reviews');
 const subcontractorRoutes = require('./routes/subcontractor');
+const rateLimit = require('./middleware/rateLimitMiddleware');
+const verifyCaptcha = require('./middleware/captchaMiddleware');
+const { initializeTransporter } = require('./services/emailService');
 
 const app = express();
+
+// Initialize email transporter on startup
+initializeTransporter();
 
 // Validate environment variables on startup
 const requiredEnvVars = ['SUPABASE_URL', 'SUPABASE_SECRET_KEY', 'JWT_SECRET'];
@@ -70,9 +77,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/quote', quoteRoutes);
-app.use('/api/subcontractor', subcontractorRoutes);
+
+// Public form endpoints with rate limiting (5 requests per 15 minutes) and CAPTCHA
+app.use('/api/contact', rateLimit(15 * 60 * 1000, 5), verifyCaptcha, contactRoutes);
+app.use('/api/quote', rateLimit(15 * 60 * 1000, 5), verifyCaptcha, quoteRoutes);
+app.use('/api/reviews', reviewRoutes);
+
+app.use('/api/subcontractor', rateLimit(15 * 60 * 1000, 5), verifyCaptcha, subcontractorRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

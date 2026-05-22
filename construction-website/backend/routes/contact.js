@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const supabase = require('../config/supabase'); // ← replace Contact model
+const supabase = require('../config/supabase');
 const authMiddleware = require('../middleware/authMiddleware');
 const { validateContactForm, sanitizeObject } = require('../utils/validators');
+const { sendContactConfirmation, sendContactNotificationToAdmin } = require('../services/emailService');
 
 // POST: Submit contact form (public endpoint)
 router.post('/submit', async (req, res) => {
@@ -44,6 +45,14 @@ router.post('/submit', async (req, res) => {
         }
 
         console.log('✓ Contact form submitted:', contact.email);
+        
+        // Send confirmation email to user (non-blocking)
+        sendContactConfirmation(sanitized.name, sanitized.email, sanitized.subject)
+            .catch(err => console.error('✗ Failed to send confirmation email:', err.message));
+        
+        // Send notification email to admin (non-blocking)
+        sendContactNotificationToAdmin(sanitized.name, sanitized.email, sanitized.subject, sanitized.message, sanitized.phone)
+            .catch(err => console.error('✗ Failed to send admin notification:', err.message));
         
         res.json({ 
             success: true, 

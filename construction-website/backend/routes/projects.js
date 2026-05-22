@@ -30,12 +30,25 @@ const upload = multer({
     }
 });
 
-// GET: Fetch all projects (public endpoint)
+// GET: Fetch all projects (public endpoint) with optional filtering
 router.get('/', async (req, res) => {
     try {
-        const { data: projects, error } = await supabase
+        const { category, status } = req.query;
+        
+        let query = supabase
             .from('projects')
-            .select('*')
+            .select('*');
+        
+        // Apply filters if provided
+        if (category) {
+            query = query.eq('category', category);
+        }
+        
+        if (status) {
+            query = query.eq('status', status.toLowerCase());
+        }
+        
+        const { data: projects, error } = await query
             .order('created_at', { ascending: false });
 
         if (error) {

@@ -147,6 +147,52 @@ function sanitizeString(input) {
 }
 
 /**
+ * Validate review submission data
+ * @param {Object} data - Review data to validate
+ * @returns {Object} - { isValid: boolean, errors: string[] }
+ */
+function validateReview(data) {
+    const errors = [];
+
+    if (!data.name || typeof data.name !== 'string' || data.name.trim().length < 2) {
+        errors.push('Name must be at least 2 characters');
+    }
+
+    if (!data.email || !EMAIL_REGEX.test(data.email)) {
+        errors.push('Valid email address is required');
+    }
+
+    if (!data.rating || data.rating < 1 || data.rating > 5) {
+        errors.push('Rating must be between 1 and 5');
+    }
+
+    if (!data.title || typeof data.title !== 'string' || data.title.trim().length < 3) {
+        errors.push('Review title must be at least 3 characters');
+    }
+
+    if (!data.message || typeof data.message !== 'string' || data.message.trim().length < 10) {
+        errors.push('Review message must be at least 10 characters');
+    }
+
+    return {
+        isValid: errors.length === 0,
+        errors
+    };
+}
+
+/**
+ * Sanitize string input (trim and basic XSS prevention)
+ * @param {string} input - String to sanitize
+ * @returns {string} - Sanitized string
+ */
+function sanitizeString(input) {
+    if (typeof input !== 'string') return '';
+    return input
+        .trim()
+        .replace(/[<>]/g, ''); // Remove < and > to prevent basic XSS
+}
+
+/**
  * Sanitize object fields
  * @param {Object} obj - Object to sanitize
  * @param {string[]} fields - Fields to sanitize
@@ -167,6 +213,7 @@ module.exports = {
     validateSubcontractorForm,
     validateQuoteRequest,
     validateProjectData,
+    validateReview,
     sanitizeString,
     sanitizeObject
 };

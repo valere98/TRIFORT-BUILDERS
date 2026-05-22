@@ -53,3 +53,16 @@ CREATE TABLE subcontractors (
   status TEXT DEFAULT 'pending',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+CREATE TABLE reviews (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  rating INTEGER DEFAULT 5,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  project_type TEXT DEFAULT '',
+  status TEXT DEFAULT 'pending',
+  verified BOOLEAN DEFAULT false,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
